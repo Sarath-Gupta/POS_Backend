@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClientUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-project</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.util</a> &gt; <span class="el_source">ClientUtil.java</span></div><h1>ClientUtil.java</h1><pre class="source lang-java linenums">package com.increff.pos.util;
+
+import com.increff.pos.model.form.ClientForm;
+import com.increff.pos.commons.ApiException;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L13">public class ClientUtil {</span>
+
+    public static List&lt;ClientForm&gt; parseTSV(MultipartFile file) throws ApiException {
+<span class="nc" id="L16">        List&lt;ClientForm&gt; clientForms = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L17">        try (BufferedReader reader = new BufferedReader(</span>
+<span class="nc" id="L18">                new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {</span>
+            String line;
+<span class="nc" id="L20">            boolean isFirstLine = true;</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">            while ((line = reader.readLine()) != null) {</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">                if (isFirstLine) {</span>
+<span class="nc" id="L23">                    isFirstLine = false;</span>
+<span class="nc" id="L24">                    continue;</span>
+                }
+<span class="nc" id="L26">                line = line.trim();</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">                if (line.isEmpty()) continue;</span>
+<span class="nc" id="L28">                ClientForm clientForm = new ClientForm();</span>
+<span class="nc" id="L29">                clientForm.setClientName(line);</span>
+<span class="nc" id="L30">                clientForms.add(clientForm);</span>
+<span class="nc" id="L31">            }</span>
+<span class="nc" id="L32">        } catch (Exception e) {</span>
+<span class="nc" id="L33">            throw new ApiException(&quot;Failed to parse TSV file: &quot; + e.getMessage());</span>
+<span class="nc" id="L34">        }</span>
+<span class="nc" id="L35">        return clientForms;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

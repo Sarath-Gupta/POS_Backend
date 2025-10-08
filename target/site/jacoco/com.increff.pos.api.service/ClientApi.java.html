@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClientApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-project</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.api.service</a> &gt; <span class="el_source">ClientApi.java</span></div><h1>ClientApi.java</h1><pre class="source lang-java linenums">package com.increff.pos.api.service;
+
+import com.increff.pos.dao.ClientDao;
+import com.increff.pos.entity.Client;
+import com.increff.pos.commons.ApiException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+
+@Service
+<span class="nc" id="L12">public class ClientApi {</span>
+
+    @Autowired
+    private ClientDao clientDao;
+
+    @Transactional
+    public void add(Client client) throws ApiException {
+<span class="nc" id="L19">        Client existingClient = clientDao.findByName(client.getClientName());</span>
+<span class="nc" id="L20">        AbstractApi.ifExists(existingClient);</span>
+<span class="nc" id="L21">        clientDao.add(client);</span>
+<span class="nc" id="L22">    }</span>
+
+    public Client getCheckById(Integer id) throws ApiException {
+<span class="nc" id="L25">        Client clientPojo = clientDao.findById(id);</span>
+<span class="nc" id="L26">        AbstractApi.ifNotExists(clientPojo);</span>
+<span class="nc" id="L27">        return clientPojo;</span>
+    }
+
+    public Client getById(Integer id) {
+<span class="nc" id="L31">        Client client = clientDao.findById(id);</span>
+<span class="nc" id="L32">        return client;</span>
+    }
+
+    public List&lt;Client&gt; getAll() {
+<span class="nc" id="L36">        return clientDao.findAll();</span>
+    }
+
+    @Transactional
+    public Client update(Integer id, Client client) throws ApiException {
+<span class="nc" id="L41">        Client oldClient = clientDao.findById(id);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if(oldClient.getClientName().equals(client.getClientName())) {</span>
+<span class="nc" id="L43">            throw new ApiException(&quot;Client name already exists&quot;);</span>
+        }
+<span class="nc" id="L45">        oldClient.setClientName(client.getClientName());</span>
+<span class="nc" id="L46">        clientDao.update(oldClient);</span>
+<span class="nc" id="L47">        return oldClient;</span>
+    }
+
+    @Transactional
+    public void delete(Integer id) throws ApiException {
+<span class="nc" id="L52">        Client deleteClient = clientDao.findById(id);</span>
+<span class="nc" id="L53">        AbstractApi.ifNotExists(deleteClient);</span>
+<span class="nc" id="L54">        clientDao.delete(deleteClient);</span>
+<span class="nc" id="L55">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

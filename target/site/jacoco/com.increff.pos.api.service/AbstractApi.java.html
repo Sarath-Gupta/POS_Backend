@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-project</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.api.service</a> &gt; <span class="el_source">AbstractApi.java</span></div><h1>AbstractApi.java</h1><pre class="source lang-java linenums">package com.increff.pos.api.service;
+
+import com.increff.pos.commons.ApiException;
+
+import java.util.Objects;
+
+<span class="nc" id="L7">public class AbstractApi {</span>
+    public static void ifNotExists(Object obj) throws ApiException{
+<span class="nc bnc" id="L9" title="All 2 branches missed.">        if(Objects.isNull(obj)) {</span>
+            //TODO: also take entity name as input param for better error message
+<span class="nc" id="L11">            throw new ApiException(&quot;Object doesn't exist&quot;);</span>
+        }
+<span class="nc" id="L13">    }</span>
+
+    public static void ifExists(Object obj) throws ApiException {
+<span class="nc bnc" id="L16" title="All 2 branches missed.">        if(!Objects.isNull(obj)) {</span>
+<span class="nc" id="L17">            throw new ApiException(&quot;Object does exist&quot;);</span>
+        }
+<span class="nc" id="L19">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

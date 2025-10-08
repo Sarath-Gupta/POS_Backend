@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrdersDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-project</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.dto</a> &gt; <span class="el_source">OrdersDto.java</span></div><h1>OrdersDto.java</h1><pre class="source lang-java linenums">package com.increff.pos.dto;
+
+import com.increff.pos.api.service.OrderApi;
+import com.increff.pos.commons.ApiException;
+import com.increff.pos.model.data.OrderData;
+import com.increff.pos.entity.Orders;
+import com.increff.pos.util.AbstractMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+<span class="nc" id="L14">public class OrdersDto {</span>
+
+    @Autowired
+    OrderApi orderApi;
+
+    @Autowired
+    AbstractMapper mapper;
+
+    public List&lt;OrderData&gt; getAll() {
+<span class="nc" id="L23">        List&lt;Orders&gt; listPojo = orderApi.getAll();</span>
+<span class="nc" id="L24">        return mapper.convert(listPojo, OrderData.class);</span>
+    }
+
+    public OrderData getById(Integer id) throws ApiException {
+<span class="nc" id="L28">        Orders orderPojo = orderApi.getById(id);</span>
+<span class="nc" id="L29">        return mapper.convert(orderPojo, OrderData.class);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

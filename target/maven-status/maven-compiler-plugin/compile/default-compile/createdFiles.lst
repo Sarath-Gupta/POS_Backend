@@ -19,6 +19,7 @@ com/increff/pos/config/DbConfig.class
 com/increff/pos/controller/ProductController.class
 com/increff/pos/dto/ClientDto.class
 com/increff/pos/commons/Constants.class
+com/increff/pos/util/ClientUtil.class
 com/increff/pos/controller/OrderController.class
 com/increff/pos/api/flow/OrderItemFlow.class
 com/increff/pos/dto/ProductDto.class
@@ -29,6 +30,7 @@ com/increff/pos/entity/Inventory.class
 com/increff/pos/model/form/OrderForm.class
 com/increff/pos/api/flow/ProductFlow.class
 com/increff/pos/api/service/ProductApi.class
+com/increff/pos/util/ProductUtil.class
 com/increff/pos/controller/ClientController.class
 com/increff/pos/model/form/ProductForm.class
 com/increff/pos/model/data/ClientData.class

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpringConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-project</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.config</a> &gt; <span class="el_source">SpringConfig.java</span></div><h1>SpringConfig.java</h1><pre class="source lang-java linenums">package com.increff.pos.config;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+@EnableWebMvc
+@ComponentScan(&quot;com.increff.pos&quot;)
+<span class="nc" id="L17">class SpringConfig implements WebMvcConfigurer {</span>
+
+    @Bean
+    public ModelMapper modelMapper() {
+<span class="nc" id="L21">        return new ModelMapper();</span>
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean validator() {
+<span class="nc" id="L26">        return new LocalValidatorFactoryBean();</span>
+    }
+
+    @Bean(name = &quot;multipartResolver&quot;)
+    public CommonsMultipartResolver multipartResolver() {
+<span class="nc" id="L31">        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();</span>
+<span class="nc" id="L32">        return multipartResolver;</span>
+    }
+
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+<span class="nc" id="L38">        registry.addMapping(&quot;/**&quot;)</span>
+<span class="nc" id="L39">                .allowedOrigins(&quot;*&quot;)</span>
+<span class="nc" id="L40">                .allowedMethods(&quot;GET&quot;,&quot;POST&quot;,&quot;PUT&quot;,&quot;DELETE&quot;,&quot;HEAD&quot;,&quot;OPTIONS&quot;)</span>
+<span class="nc" id="L41">                .allowedHeaders(&quot;*&quot;);</span>
+<span class="nc" id="L42">    }</span>
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+<span class="nc" id="L46">        registry.addResourceHandler(&quot;swagger-ui.html&quot;)</span>
+<span class="nc" id="L47">                .addResourceLocations(&quot;classpath:/META-INF/resources/&quot;);</span>
+
+<span class="nc" id="L49">        registry.addResourceHandler(&quot;/webjars/**&quot;)</span>
+<span class="nc" id="L50">                .addResourceLocations(&quot;classpath:/META-INF/resources/webjars/&quot;);</span>
+<span class="nc" id="L51">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

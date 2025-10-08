@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductFlow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-project</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.api.flow</a> &gt; <span class="el_source">ProductFlow.java</span></div><h1>ProductFlow.java</h1><pre class="source lang-java linenums">package com.increff.pos.api.flow;
+
+import com.increff.pos.api.service.AbstractApi;
+import com.increff.pos.api.service.ClientApi;
+import com.increff.pos.api.service.InventoryApi;
+import com.increff.pos.api.service.ProductApi;
+import com.increff.pos.commons.ApiException;
+import com.increff.pos.entity.Client;
+import com.increff.pos.entity.Inventory;
+import com.increff.pos.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+<span class="nc" id="L15">public class ProductFlow {</span>
+
+    @Autowired
+    ClientApi clientApi;
+
+    @Autowired
+    ProductApi productApi;
+
+    @Autowired
+    InventoryApi inventoryApi;
+
+    public void add(Product product) throws ApiException {
+<span class="nc" id="L27">        Client clientPojo = clientApi.getById(product.getClientId());</span>
+<span class="nc" id="L28">        AbstractApi.ifNotExists(clientPojo);</span>
+<span class="nc" id="L29">        productApi.add(product);</span>
+
+<span class="nc" id="L31">        Inventory inventory = new Inventory();</span>
+<span class="nc" id="L32">        inventory.setProductId(product.getId());</span>
+<span class="nc" id="L33">        inventory.setQuantity(0);</span>
+<span class="nc" id="L34">        inventoryApi.add(inventory);</span>
+<span class="nc" id="L35">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

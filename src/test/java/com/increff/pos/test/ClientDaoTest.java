@@ -47,12 +47,12 @@ public class ClientDaoTest {
     @Transactional
     public void testFindById() {
         Client client = new Client();
-        client.setClientName("Hello");
+        client.setClientName("helo123123");
         clientRepository.add(client);
 
         Integer id = client.getId();
         Client retrievedClient = clientRepository.findById(id);
         assertNotNull(retrievedClient);
-        assertEquals("Hello",retrievedClient.getClientName());
+        assertEquals("helo123123",retrievedClient.getClientName());
     }
 }

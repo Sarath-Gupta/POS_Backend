@@ -46,5 +46,7 @@
 /Users/sarathgupta/Projects/POS_Project/backend/src/main/java/com/increff/pos/model/form/OrderItemForm.java
 /Users/sarathgupta/Projects/POS_Project/backend/src/main/java/com/increff/pos/model/form/ProductForm.java
 /Users/sarathgupta/Projects/POS_Project/backend/src/main/java/com/increff/pos/util/AbstractMapper.java
+/Users/sarathgupta/Projects/POS_Project/backend/src/main/java/com/increff/pos/util/ClientUtil.java
 /Users/sarathgupta/Projects/POS_Project/backend/src/main/java/com/increff/pos/util/NormalizeUtil.java
+/Users/sarathgupta/Projects/POS_Project/backend/src/main/java/com/increff/pos/util/ProductUtil.java
 /Users/sarathgupta/Projects/POS_Project/backend/src/main/java/com/increff/pos/util/ValidationUtil.java

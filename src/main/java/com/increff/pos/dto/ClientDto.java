@@ -6,11 +6,14 @@ import com.increff.pos.model.data.ClientData;
 import com.increff.pos.model.form.ClientForm;
 import com.increff.pos.entity.Client;
 import com.increff.pos.util.AbstractMapper;
+import com.increff.pos.util.ClientUtil;
 import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -27,16 +30,29 @@ public class ClientDto {
 
     public ClientData add(ClientForm clientForm) throws ApiException {
         //TODO: first do the validation and then normalize
-        NormalizeUtil.normalize(clientForm);
         validationUtil.validate(clientForm);
+        NormalizeUtil.normalize(clientForm);
         Client clientPojo = mapper.convert(clientForm, Client.class);
         clientApi.add(clientPojo);
         return mapper.convert(clientPojo, ClientData.class);
     }
 
-//    public List<ClientData> addFile(MultipartFile file) throws ApiException {
-//        List<ClientForm> listClient = ClientUtil.parse(file,Client.class);
-//    }
+    public List<ClientData> addFile(MultipartFile file) throws ApiException {
+        List<ClientForm> clientForms = ClientUtil.parseTSV(file);
+        List<ClientData> addedClients = new ArrayList<>();
+        for (ClientForm clientForm : clientForms) {
+            try {
+                validationUtil.validate(clientForm);
+                NormalizeUtil.normalize(clientForm);
+                Client clientPojo = mapper.convert(clientForm, Client.class);
+                clientApi.add(clientPojo);
+                addedClients.add(mapper.convert(clientPojo, ClientData.class));
+            } catch (ApiException e) {
+                System.out.println("Skipping invalid row: " + clientForm + " Reason: " + e.getMessage());
+            }
+        }
+        return addedClients;
+    }
 
     public ClientData getById(Integer id) throws ApiException {
         Client clientPojo = clientApi.getById(id);
@@ -52,8 +68,8 @@ public class ClientDto {
     }
 
     public ClientData update(Integer id, ClientForm clientForm) throws ApiException {
-        NormalizeUtil.normalize(clientForm);
         validationUtil.validate(clientForm);
+        NormalizeUtil.normalize(clientForm);
         Client clientPojo = mapper.convert(clientForm, Client.class);
         Client updatedPojo = clientApi.update(id, clientPojo);
         return mapper.convert(updatedPojo, ClientData.class);
