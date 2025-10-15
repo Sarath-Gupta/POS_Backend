@@ -6,12 +6,10 @@ import com.increff.pos.entity.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
-
 @Service
-public class OrderApi {
+public class OrderApi extends AbstractApi<Orders>{
 
     @Autowired
     OrdersDao ordersDao;
@@ -27,7 +25,7 @@ public class OrderApi {
 
     public Orders getById(Integer id) throws ApiException {
         Orders order = ordersDao.findById(id);
-        AbstractApi.ifNotExists(order);
+        ifNotExists(order);
         return order;
     }
 }

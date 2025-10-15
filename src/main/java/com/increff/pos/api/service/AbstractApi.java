@@ -2,19 +2,30 @@ package com.increff.pos.api.service;
 
 import com.increff.pos.commons.ApiException;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
-public class AbstractApi {
-    public static void ifNotExists(Object obj) throws ApiException{
+public class AbstractApi<T> {
+    private final Class<T> entityClass;
+
+    @SuppressWarnings("unchecked")
+    public AbstractApi() {
+        this.entityClass = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass())
+                .getActualTypeArguments()[0];
+    }
+
+    public void ifNotExists(Object obj) throws ApiException{
         if(Objects.isNull(obj)) {
-            //TODO: also take entity name as input param for better error message
-            throw new ApiException("Object doesn't exist");
+            String message = entityClass.getSimpleName() + " doesn't exist";
+            throw new ApiException(message);
         }
     }
 
-    public static void ifExists(Object obj) throws ApiException {
+    public void ifExists(Object obj) throws ApiException {
         if(!Objects.isNull(obj)) {
-            throw new ApiException("Object does exist");
+            String message = entityClass.getSimpleName();
+            throw new ApiException(message + " already exists");
         }
     }
 }

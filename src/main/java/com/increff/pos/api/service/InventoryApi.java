@@ -6,11 +6,10 @@ import com.increff.pos.entity.Inventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
-public class InventoryApi {
+public class InventoryApi extends AbstractApi<Inventory> {
 
     @Autowired
     private InventoryDao inventoryDao;
@@ -18,19 +17,19 @@ public class InventoryApi {
     @Transactional
     public void add(Inventory inventory) throws ApiException {
         Inventory existing = inventoryDao.findByProductId(inventory.getProductId());
-        AbstractApi.ifExists(existing);
+        ifExists(existing);
         inventoryDao.add(inventory);
     }
 
     public Inventory findById(Integer id) throws ApiException {
         Inventory inventory = inventoryDao.findById(id);
-        AbstractApi.ifNotExists(inventory);
+        ifNotExists(inventory);
         return inventory;
     }
 
     public Inventory findByProductId(Integer productId) throws ApiException {
         Inventory inventory = inventoryDao.findByProductId(productId);
-        AbstractApi.ifNotExists(inventory);
+        ifNotExists(inventory);
         return inventory;
     }
 
@@ -41,9 +40,25 @@ public class InventoryApi {
     @Transactional
     public Inventory update(Integer id, Inventory updatedInventory) throws ApiException {
         Inventory existing = inventoryDao.findById(id);
-        AbstractApi.ifNotExists(existing);
+        ifNotExists(existing);
         existing.setQuantity(updatedInventory.getQuantity());
         return existing;
+    }
+
+
+    public void checkStock(Integer productId, Integer quantityToBeReduced) throws ApiException {
+        Inventory existing = inventoryDao.findByProductId(productId);
+        if(existing.getQuantity() < quantityToBeReduced) {
+            throw new ApiException("Insufficient Quantity");
+        }
+    }
+
+    public void reduceStock(Integer productId, Integer quantityToBeReduced) throws ApiException{
+        Inventory existing = inventoryDao.findByProductId(productId);
+        existing.setQuantity(existing.getQuantity() - quantityToBeReduced);
+        if(existing.getQuantity() < 0) {
+            throw new ApiException("Item out of Stock");
+        }
     }
 
 

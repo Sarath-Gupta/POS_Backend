@@ -6,12 +6,12 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {};
+        return new Class[] { DbConfig.class, SecurityConfig.class };
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { SpringConfig.class };
+        return new Class[] { SpringConfig.class, SwaggerConfig.class };
     }
 
     @Override
@@ -20,3 +20,4 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     }
 
 }
+

@@ -6,24 +6,30 @@ import com.increff.pos.commons.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
-public class ClientApi {
+public class ClientApi extends AbstractApi<Client>{
 
     @Autowired
     private ClientDao clientDao;
 
+    @PostConstruct
+    public void logClassLoader() {
+        System.out.println("ClientApi classloader: " + this.getClass().getClassLoader());
+    }
+
     @Transactional
     public void add(Client client) throws ApiException {
         Client existingClient = clientDao.findByName(client.getClientName());
-        AbstractApi.ifExists(existingClient);
+        ifExists(existingClient);
         clientDao.add(client);
     }
 
     public Client getCheckById(Integer id) throws ApiException {
         Client clientPojo = clientDao.findById(id);
-        AbstractApi.ifNotExists(clientPojo);
+        ifNotExists(clientPojo);
         return clientPojo;
     }
 
@@ -39,19 +45,11 @@ public class ClientApi {
     @Transactional
     public Client update(Integer id, Client client) throws ApiException {
         Client oldClient = clientDao.findById(id);
-        if(oldClient.getClientName().equals(client.getClientName())) {
-            throw new ApiException("Client name already exists");
-        }
+        Client checkClient = clientDao.findByName(client.getClientName());
+        ifExists(checkClient);
         oldClient.setClientName(client.getClientName());
-        clientDao.update(oldClient);
         return oldClient;
     }
 
-    @Transactional
-    public void delete(Integer id) throws ApiException {
-        Client deleteClient = clientDao.findById(id);
-        AbstractApi.ifNotExists(deleteClient);
-        clientDao.delete(deleteClient);
-    }
 
 }

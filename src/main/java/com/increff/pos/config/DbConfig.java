@@ -1,52 +1,34 @@
 package com.increff.pos.config;
 
 import java.util.Properties;
-
 import javax.sql.DataSource;
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import com.increff.pos.commons.Constants;
 
 @EnableTransactionManagement
 @Configuration
-@PropertySource("classpath:pos.properties")
-@EnableJpaRepositories(basePackages = "com.increff.pos.dao")
-@ComponentScan(basePackages = "com.increff.pos.dao")
+@ComponentScan(
+        basePackages = "com.increff.pos",
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)
+)
 public class DbConfig {
 
-    @Value("${jdbc.driverClassName}")
-    private String jdbcDriver;
-    @Value("${jdbc.url}")
-    private String jdbcUrl;
-    @Value("${jdbc.username}")
-    private String jdbcUsername;
-    @Value("${jdbc.password}")
-    private String jdbcPassword;
-    @Value("${hibernate.dialect}")
-    private String hibernateDialect;
-    @Value("${hibernate.show_sql}")
-    private String hibernateShowSql;
-    @Value("${hibernate.hbm2ddl.auto}")
-    private String hibernateHbm2ddl;
-    @Bean(name = "dataSource")
+    @Autowired
+    private ApplicationProperties properties;
 
+    @Bean(name = "dataSource")
     public DataSource getDataSource() {
         BasicDataSource bean = new BasicDataSource();
-        bean.setDriverClassName(jdbcDriver);
-        bean.setUrl(jdbcUrl);
-        bean.setUsername(jdbcUsername);
-        bean.setPassword(jdbcPassword);
+        bean.setDriverClassName(properties.getJdbcDriver());
+        bean.setUrl(properties.getJdbcUrl());
+        bean.setUsername(properties.getJdbcUsername());
+        bean.setPassword(properties.getJdbcPassword());
         bean.setInitialSize(2);
         bean.setDefaultAutoCommit(false);
         bean.setMinIdle(2);
@@ -61,13 +43,13 @@ public class DbConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setDataSource(dataSource);
-        bean.setPackagesToScan(Constants.PACKAGE_POJO);
+        bean.setPackagesToScan(new String[] {"com.increff.pos.entity"});
         HibernateJpaVendorAdapter jpaAdapter = new HibernateJpaVendorAdapter();
         bean.setJpaVendorAdapter(jpaAdapter);
         Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.dialect", hibernateDialect);
-        jpaProperties.put("hibernate.show_sql", hibernateShowSql);
-        jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
+        jpaProperties.put("hibernate.dialect", properties.getHibernateDialect());
+        jpaProperties.put("hibernate.show_sql", properties.getHibernateShowSql());
+        jpaProperties.put("hibernate.hbm2ddl.auto", properties.getHibernateHbm2ddl());
         bean.setJpaProperties(jpaProperties);
         return bean;
     }
@@ -80,3 +62,4 @@ public class DbConfig {
         return bean;
     }
 }
+

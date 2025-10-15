@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-project</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.commons</a> &gt; <span class="el_source">ApiException.java</span></div><h1>ApiException.java</h1><pre class="source lang-java linenums">package com.increff.pos.commons;
 
 public class ApiException extends Exception {
+
+    // --- Define Specific Error Types ---
+<span class="nc" id="L6">    public enum ErrorType {</span>
+<span class="nc" id="L7">        BAD_DATA,          // 400: Validation failure, uniqueness failure, bad format</span>
+<span class="nc" id="L8">        UNAUTHENTICATED,   // 401: Missing or invalid credentials/token</span>
+<span class="nc" id="L9">        UNAUTHORIZED,      // 403: User role lacks necessary permissions (e.g., Operator trying Supervisor action)</span>
+<span class="nc" id="L10">        INTERNAL_ERROR     // 500: Server crash, unexpected failure</span>
+    }
+
+    private final ErrorType type;
+
+    // Constructor for standard business logic errors (default to BAD_DATA)
     public ApiException(String message) {
-<span class="nc" id="L5">        super(message);</span>
-<span class="nc" id="L6">    }</span>
+<span class="nc" id="L17">        super(message);</span>
+<span class="nc" id="L18">        this.type = ErrorType.BAD_DATA;</span>
+<span class="nc" id="L19">    }</span>
+
+    // Constructor for specific error types (like 401, 403)
+    public ApiException(String message, ErrorType type) {
+<span class="nc" id="L23">        super(message);</span>
+<span class="nc" id="L24">        this.type = type;</span>
+<span class="nc" id="L25">    }</span>
+
+    public ErrorType getType() {
+<span class="nc" id="L28">        return type;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

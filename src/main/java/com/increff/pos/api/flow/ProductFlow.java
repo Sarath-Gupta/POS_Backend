@@ -11,6 +11,8 @@ import com.increff.pos.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class ProductFlow {
 
@@ -25,7 +27,9 @@ public class ProductFlow {
 
     public void add(Product product) throws ApiException {
         Client clientPojo = clientApi.getById(product.getClientId());
-        AbstractApi.ifNotExists(clientPojo);
+        if(Objects.isNull(clientPojo)) {
+            throw new ApiException("Client doesn't exist");
+        }
         productApi.add(product);
 
         Inventory inventory = new Inventory();

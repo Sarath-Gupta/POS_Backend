@@ -5,7 +5,6 @@ import com.increff.pos.commons.ApiException;
 import com.increff.pos.model.form.ClientForm;
 import com.increff.pos.model.data.ClientData;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +46,4 @@ public class ClientController {
         return clientDto.update(id, clientForm);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteClient(@PathVariable(value = "id") Integer id) throws ApiException {
-        clientDto.delete(id);
-    }
 }

@@ -1,3 +1,4 @@
 /Users/sarathgupta/Projects/POS_Project/backend/src/test/java/com/increff/pos/test/ClientDaoTest.java
-/Users/sarathgupta/Projects/POS_Project/backend/src/test/java/com/increff/pos/test/DbConfigTest.java
+/Users/sarathgupta/Projects/POS_Project/backend/src/test/java/com/increff/pos/test/InventoryDaoTest.java
 /Users/sarathgupta/Projects/POS_Project/backend/src/test/java/com/increff/pos/test/ProductDaoTest.java
+/Users/sarathgupta/Projects/POS_Project/backend/src/test/java/com/increff/pos/test/UserDaoTest.java

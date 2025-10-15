@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
-public class ProductApi {
+public class ProductApi extends AbstractApi<Product>{
 
     @Autowired
     ProductDao productDao;
@@ -17,13 +18,13 @@ public class ProductApi {
     @Transactional
     public void add(Product product) throws ApiException {
         Product exsistingProduct = productDao.findByName(product.getName());
-        AbstractApi.ifExists(exsistingProduct);
+        ifExists(exsistingProduct);
         productDao.add(product);
     }
 
     public Product findById(Integer id) throws ApiException {
         Product product = productDao.findById(id);
-        AbstractApi.ifNotExists(product);
+        ifNotExists(product);
         return product;
     }
 
@@ -33,14 +34,17 @@ public class ProductApi {
 
     @Transactional
     public Product update(Integer id, Product product) throws ApiException{
-        Product oldClient = productDao.findById(id);
-        oldClient.setBarcode(product.getBarcode());
-        oldClient.setName(product.getName());
-        oldClient.setImgUrl(product.getImgUrl());
-        oldClient.setClientId(product.getClientId());
-        oldClient.setMrp(product.getMrp());
-        productDao.update(oldClient);
-        return product;
+        Product oldProduct = productDao.findById(id);
+        ifNotExists(oldProduct);
+        Product sameName = productDao.findByName(product.getName());
+        if(!Objects.isNull(sameName)) {
+            throw new ApiException("Product with same name already exists");
+        }
+        oldProduct.setName(product.getName());
+        oldProduct.setImgUrl(product.getImgUrl());
+        oldProduct.setMrp(product.getMrp());
+        productDao.update(oldProduct);
+        return oldProduct;
     }
 
 

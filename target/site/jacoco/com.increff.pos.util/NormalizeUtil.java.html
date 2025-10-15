@@ -2,16 +2,31 @@
 
 import com.increff.pos.model.form.ClientForm;
 import com.increff.pos.model.form.ProductForm;
+import com.increff.pos.model.form.ProductUpdateForm;
+import com.increff.pos.model.form.UserForm;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-<span class="nc" id="L6">public class NormalizeUtil {</span>
+
+<span class="nc" id="L10">public class NormalizeUtil {</span>
+
     public static void normalize(ClientForm clientForm) {
-<span class="nc" id="L8">        clientForm.setClientName(clientForm.getClientName().trim().toLowerCase());</span>
-<span class="nc" id="L9">    }</span>
+<span class="nc" id="L13">        clientForm.setClientName(clientForm.getClientName().trim().toLowerCase());</span>
+<span class="nc" id="L14">    }</span>
 
     public static void normalize(ProductForm productForm) {
-<span class="nc" id="L12">        productForm.setBarcode(productForm.getBarcode().trim().toLowerCase());</span>
-<span class="nc" id="L13">        productForm.setName(productForm.getName().trim().toLowerCase());</span>
-<span class="nc" id="L14">        productForm.setImgUrl(productForm.getImgUrl().trim().toLowerCase());</span>
-<span class="nc" id="L15">    }</span>
+<span class="nc" id="L17">        productForm.setBarcode(productForm.getBarcode().trim().toLowerCase());</span>
+<span class="nc" id="L18">        productForm.setName(productForm.getName().trim().toLowerCase());</span>
+<span class="nc" id="L19">        productForm.setImgUrl(productForm.getImgUrl().trim().toLowerCase());</span>
+<span class="nc" id="L20">    }</span>
+
+    public static void normalize(ProductUpdateForm productForm) {
+<span class="nc" id="L23">        productForm.setImgUrl(productForm.getImgUrl().trim().toLowerCase());</span>
+<span class="nc" id="L24">    }</span>
+
+    public static void normalize(UserForm userForm) {
+<span class="nc" id="L27">        userForm.setEmail(userForm.getEmail().trim().toLowerCase());</span>
+<span class="nc" id="L28">        userForm.setPassword(userForm.getPassword().trim());</span>
+
+<span class="nc" id="L30">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

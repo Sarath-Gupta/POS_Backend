@@ -27,9 +27,9 @@ public abstract class AbstractDao&lt;T&gt; {
     }
 
     public List&lt;T&gt; findAll() {
-<span class="nc" id="L30">        String className = entityClass.getSimpleName();</span>
-<span class="nc" id="L31">        TypedQuery&lt;T&gt; query = entityManager.createQuery(&quot;SELECT e FROM &quot; + className + &quot; e&quot;, entityClass);</span>
-<span class="nc" id="L32">        return query.getResultList();</span>
+<span class="fc" id="L30">        String className = entityClass.getSimpleName();</span>
+<span class="fc" id="L31">        TypedQuery&lt;T&gt; query = entityManager.createQuery(&quot;SELECT e FROM &quot; + className + &quot; e&quot;, entityClass);</span>
+<span class="fc" id="L32">        return query.getResultList();</span>
     }
 
     public void add(T entity) {
@@ -38,8 +38,8 @@ public abstract class AbstractDao&lt;T&gt; {
 
 
     public void update(T entity) {
-<span class="nc" id="L41">        entityManager.merge(entity);</span>
-<span class="nc" id="L42">    }</span>
+<span class="fc" id="L41">        entityManager.merge(entity);</span>
+<span class="fc" id="L42">    }</span>
 
     public void delete(T entity) {
 <span class="nc" id="L45">        entityManager.remove(entity);</span>

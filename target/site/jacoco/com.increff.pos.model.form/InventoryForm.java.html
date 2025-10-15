@@ -10,12 +10,8 @@ import javax.validation.constraints.Positive;
 <span class="nc" id="L10">@Setter</span>
 
 <span class="nc" id="L12">public class InventoryForm {</span>
-    @NotNull(message = &quot;Product ID cannot be empty&quot;)
-    @Positive(message = &quot;Product ID must be positive&quot;)
-<span class="nc" id="L15">    private Integer productId;</span>
-
     @NotNull(message = &quot;Quantity cannot be empty&quot;)
     @Max(value = 255, message = &quot;Quantity cannot exceed 255&quot;)
-<span class="nc" id="L19">    private Integer quantity;</span>
+<span class="nc" id="L15">    private Integer quantity;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

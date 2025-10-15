@@ -37,6 +37,7 @@ public class ClientDto {
         return mapper.convert(clientPojo, ClientData.class);
     }
 
+    //TODO: it should return a tsv file as response
     public List<ClientData> addFile(MultipartFile file) throws ApiException {
         List<ClientForm> clientForms = ClientUtil.parseTSV(file);
         List<ClientData> addedClients = new ArrayList<>();
@@ -48,6 +49,7 @@ public class ClientDto {
                 clientApi.add(clientPojo);
                 addedClients.add(mapper.convert(clientPojo, ClientData.class));
             } catch (ApiException e) {
+                //TODO: rollback the entire operation if even one of the row is invalid
                 System.out.println("Skipping invalid row: " + clientForm + " Reason: " + e.getMessage());
             }
         }
@@ -74,11 +76,6 @@ public class ClientDto {
         Client updatedPojo = clientApi.update(id, clientPojo);
         return mapper.convert(updatedPojo, ClientData.class);
     }
-
-    public void delete(Integer id) throws ApiException {
-        clientApi.delete(id);
-    }
-
 
 
 }

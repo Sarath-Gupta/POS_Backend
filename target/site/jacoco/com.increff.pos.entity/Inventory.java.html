@@ -7,18 +7,18 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-<span class="nc" id="L10">@Setter</span>
+<span class="pc" id="L10">@Setter</span>
 <span class="fc" id="L11">public class Inventory extends BaseEntity {</span>
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-<span class="nc" id="L15">    private Integer id;</span>
+<span class="fc" id="L15">    private Integer id;</span>
 
     @Column(nullable = false, unique = true)
 <span class="nc" id="L18">    private Integer productId;</span>
 
     @Column(nullable = false)
-<span class="nc" id="L21">    private Integer quantity;</span>
+<span class="fc" id="L21">    private Integer quantity;</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

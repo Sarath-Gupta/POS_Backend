@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 @Component
 public class ValidationUtil {
 
-    //TODO: use Validator Factory
     @Autowired
     private Validator validator;
 

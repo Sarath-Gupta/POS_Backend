@@ -6,29 +6,27 @@ import com.increff.pos.entity.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
-
 @Service
-<span class="nc" id="L14">public class OrderApi {</span>
+<span class="fc" id="L12">public class OrderApi extends AbstractApi&lt;Orders&gt;{</span>
 
     @Autowired
     OrdersDao ordersDao;
 
     @Transactional
     public void add(Orders order) {
-<span class="nc" id="L21">        ordersDao.add(order);</span>
-<span class="nc" id="L22">    }</span>
+<span class="nc" id="L19">        ordersDao.add(order);</span>
+<span class="nc" id="L20">    }</span>
 
     public List&lt;Orders&gt; getAll() {
-<span class="nc" id="L25">        return ordersDao.findAll();</span>
+<span class="nc" id="L23">        return ordersDao.findAll();</span>
     }
 
     public Orders getById(Integer id) throws ApiException {
-<span class="nc" id="L29">        Orders order = ordersDao.findById(id);</span>
-<span class="nc" id="L30">        AbstractApi.ifNotExists(order);</span>
-<span class="nc" id="L31">        return order;</span>
+<span class="nc" id="L27">        Orders order = ordersDao.findById(id);</span>
+<span class="nc" id="L28">        ifNotExists(order);</span>
+<span class="nc" id="L29">        return order;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

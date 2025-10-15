@@ -37,48 +37,45 @@ import java.util.List;
 <span class="nc" id="L37">        return mapper.convert(clientPojo, ClientData.class);</span>
     }
 
+    //TODO: it should return a tsv file as response
     public List&lt;ClientData&gt; addFile(MultipartFile file) throws ApiException {
-<span class="nc" id="L41">        List&lt;ClientForm&gt; clientForms = ClientUtil.parseTSV(file);</span>
-<span class="nc" id="L42">        List&lt;ClientData&gt; addedClients = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        for (ClientForm clientForm : clientForms) {</span>
+<span class="nc" id="L42">        List&lt;ClientForm&gt; clientForms = ClientUtil.parseTSV(file);</span>
+<span class="nc" id="L43">        List&lt;ClientData&gt; addedClients = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        for (ClientForm clientForm : clientForms) {</span>
             try {
-<span class="nc" id="L45">                validationUtil.validate(clientForm);</span>
-<span class="nc" id="L46">                NormalizeUtil.normalize(clientForm);</span>
-<span class="nc" id="L47">                Client clientPojo = mapper.convert(clientForm, Client.class);</span>
-<span class="nc" id="L48">                clientApi.add(clientPojo);</span>
-<span class="nc" id="L49">                addedClients.add(mapper.convert(clientPojo, ClientData.class));</span>
-<span class="nc" id="L50">            } catch (ApiException e) {</span>
-<span class="nc" id="L51">                System.out.println(&quot;Skipping invalid row: &quot; + clientForm + &quot; Reason: &quot; + e.getMessage());</span>
-<span class="nc" id="L52">            }</span>
-<span class="nc" id="L53">        }</span>
-<span class="nc" id="L54">        return addedClients;</span>
+<span class="nc" id="L46">                validationUtil.validate(clientForm);</span>
+<span class="nc" id="L47">                NormalizeUtil.normalize(clientForm);</span>
+<span class="nc" id="L48">                Client clientPojo = mapper.convert(clientForm, Client.class);</span>
+<span class="nc" id="L49">                clientApi.add(clientPojo);</span>
+<span class="nc" id="L50">                addedClients.add(mapper.convert(clientPojo, ClientData.class));</span>
+<span class="nc" id="L51">            } catch (ApiException e) {</span>
+                //TODO: rollback the entire operation if even one of the row is invalid
+<span class="nc" id="L53">                System.out.println(&quot;Skipping invalid row: &quot; + clientForm + &quot; Reason: &quot; + e.getMessage());</span>
+<span class="nc" id="L54">            }</span>
+<span class="nc" id="L55">        }</span>
+<span class="nc" id="L56">        return addedClients;</span>
     }
 
     public ClientData getById(Integer id) throws ApiException {
-<span class="nc" id="L58">        Client clientPojo = clientApi.getById(id);</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if(clientPojo == null) {</span>
-<span class="nc" id="L60">            return null;</span>
+<span class="nc" id="L60">        Client clientPojo = clientApi.getById(id);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if(clientPojo == null) {</span>
+<span class="nc" id="L62">            return null;</span>
         }
-<span class="nc" id="L62">        return mapper.convert(clientPojo, ClientData.class);</span>
+<span class="nc" id="L64">        return mapper.convert(clientPojo, ClientData.class);</span>
     }
 
     public List&lt;ClientData&gt; getAll() {
-<span class="nc" id="L66">        List&lt;Client&gt; list = clientApi.getAll();</span>
-<span class="nc" id="L67">        return mapper.convert(list, ClientData.class);</span>
+<span class="nc" id="L68">        List&lt;Client&gt; list = clientApi.getAll();</span>
+<span class="nc" id="L69">        return mapper.convert(list, ClientData.class);</span>
     }
 
     public ClientData update(Integer id, ClientForm clientForm) throws ApiException {
-<span class="nc" id="L71">        validationUtil.validate(clientForm);</span>
-<span class="nc" id="L72">        NormalizeUtil.normalize(clientForm);</span>
-<span class="nc" id="L73">        Client clientPojo = mapper.convert(clientForm, Client.class);</span>
-<span class="nc" id="L74">        Client updatedPojo = clientApi.update(id, clientPojo);</span>
-<span class="nc" id="L75">        return mapper.convert(updatedPojo, ClientData.class);</span>
+<span class="nc" id="L73">        validationUtil.validate(clientForm);</span>
+<span class="nc" id="L74">        NormalizeUtil.normalize(clientForm);</span>
+<span class="nc" id="L75">        Client clientPojo = mapper.convert(clientForm, Client.class);</span>
+<span class="nc" id="L76">        Client updatedPojo = clientApi.update(id, clientPojo);</span>
+<span class="nc" id="L77">        return mapper.convert(updatedPojo, ClientData.class);</span>
     }
-
-    public void delete(Integer id) throws ApiException {
-<span class="nc" id="L79">        clientApi.delete(id);</span>
-<span class="nc" id="L80">    }</span>
-
 
 
 }

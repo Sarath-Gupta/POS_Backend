@@ -6,6 +6,7 @@ import com.increff.pos.dto.ProductDto;
 import com.increff.pos.model.data.ClientData;
 import com.increff.pos.model.data.ProductData;
 import com.increff.pos.model.form.ProductForm;
+import com.increff.pos.model.form.ProductUpdateForm;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ProductData update(@PathVariable(value = "id") Integer id, @RequestBody ProductForm productForm) throws ApiException {
+    public ProductData update(@PathVariable(value = "id") Integer id, @RequestBody ProductUpdateForm productForm) throws ApiException {
         return productDto.update(id, productForm);
     }
 }

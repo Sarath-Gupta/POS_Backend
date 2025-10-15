@@ -7,40 +7,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
-<span class="nc" id="L12">public class ProductApi {</span>
+<span class="fc" id="L13">public class ProductApi extends AbstractApi&lt;Product&gt;{</span>
 
     @Autowired
     ProductDao productDao;
 
     @Transactional
     public void add(Product product) throws ApiException {
-<span class="nc" id="L19">        Product exsistingProduct = productDao.findByName(product.getName());</span>
-<span class="nc" id="L20">        AbstractApi.ifExists(exsistingProduct);</span>
-<span class="nc" id="L21">        productDao.add(product);</span>
-<span class="nc" id="L22">    }</span>
+<span class="nc" id="L20">        Product exsistingProduct = productDao.findByName(product.getName());</span>
+<span class="nc" id="L21">        ifExists(exsistingProduct);</span>
+<span class="nc" id="L22">        productDao.add(product);</span>
+<span class="nc" id="L23">    }</span>
 
     public Product findById(Integer id) throws ApiException {
-<span class="nc" id="L25">        Product product = productDao.findById(id);</span>
-<span class="nc" id="L26">        AbstractApi.ifNotExists(product);</span>
-<span class="nc" id="L27">        return product;</span>
+<span class="nc" id="L26">        Product product = productDao.findById(id);</span>
+<span class="nc" id="L27">        ifNotExists(product);</span>
+<span class="nc" id="L28">        return product;</span>
     }
 
     public List&lt;Product&gt; getAll() {
-<span class="nc" id="L31">        return productDao.findAll();</span>
+<span class="nc" id="L32">        return productDao.findAll();</span>
     }
 
     @Transactional
     public Product update(Integer id, Product product) throws ApiException{
-<span class="nc" id="L36">        Product oldClient = productDao.findById(id);</span>
-<span class="nc" id="L37">        oldClient.setBarcode(product.getBarcode());</span>
-<span class="nc" id="L38">        oldClient.setName(product.getName());</span>
-<span class="nc" id="L39">        oldClient.setImgUrl(product.getImgUrl());</span>
-<span class="nc" id="L40">        oldClient.setClientId(product.getClientId());</span>
-<span class="nc" id="L41">        oldClient.setMrp(product.getMrp());</span>
-<span class="nc" id="L42">        productDao.update(oldClient);</span>
-<span class="nc" id="L43">        return product;</span>
+<span class="nc" id="L37">        Product oldProduct = productDao.findById(id);</span>
+<span class="nc" id="L38">        ifNotExists(oldProduct);</span>
+<span class="nc" id="L39">        Product sameName = productDao.findByName(product.getName());</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if(!Objects.isNull(sameName)) {</span>
+<span class="nc" id="L41">            throw new ApiException(&quot;Product with same name already exists&quot;);</span>
+        }
+<span class="nc" id="L43">        oldProduct.setName(product.getName());</span>
+<span class="nc" id="L44">        oldProduct.setImgUrl(product.getImgUrl());</span>
+<span class="nc" id="L45">        oldProduct.setMrp(product.getMrp());</span>
+<span class="nc" id="L46">        productDao.update(oldProduct);</span>
+<span class="nc" id="L47">        return oldProduct;</span>
     }
 
 

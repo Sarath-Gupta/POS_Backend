@@ -11,8 +11,10 @@ import com.increff.pos.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
-<span class="nc" id="L15">public class ProductFlow {</span>
+<span class="fc" id="L17">public class ProductFlow {</span>
 
     @Autowired
     ClientApi clientApi;
@@ -24,14 +26,16 @@ import org.springframework.stereotype.Component;
     InventoryApi inventoryApi;
 
     public void add(Product product) throws ApiException {
-<span class="nc" id="L27">        Client clientPojo = clientApi.getById(product.getClientId());</span>
-<span class="nc" id="L28">        AbstractApi.ifNotExists(clientPojo);</span>
-<span class="nc" id="L29">        productApi.add(product);</span>
+<span class="nc" id="L29">        Client clientPojo = clientApi.getById(product.getClientId());</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if(Objects.isNull(clientPojo)) {</span>
+<span class="nc" id="L31">            throw new ApiException(&quot;Client doesn't exist&quot;);</span>
+        }
+<span class="nc" id="L33">        productApi.add(product);</span>
 
-<span class="nc" id="L31">        Inventory inventory = new Inventory();</span>
-<span class="nc" id="L32">        inventory.setProductId(product.getId());</span>
-<span class="nc" id="L33">        inventory.setQuantity(0);</span>
-<span class="nc" id="L34">        inventoryApi.add(inventory);</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L35">        Inventory inventory = new Inventory();</span>
+<span class="nc" id="L36">        inventory.setProductId(product.getId());</span>
+<span class="nc" id="L37">        inventory.setQuantity(0);</span>
+<span class="nc" id="L38">        inventoryApi.add(inventory);</span>
+<span class="nc" id="L39">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,3 +1,4 @@
-com/increff/pos/test/DbConfigTest.class
+com/increff/pos/test/UserDaoTest.class
+com/increff/pos/test/InventoryDaoTest.class
 com/increff/pos/test/ProductDaoTest.class
 com/increff/pos/test/ClientDaoTest.class

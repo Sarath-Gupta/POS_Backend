@@ -6,53 +6,51 @@ import com.increff.pos.commons.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
-<span class="nc" id="L12">public class ClientApi {</span>
+<span class="fc" id="L13">public class ClientApi extends AbstractApi&lt;Client&gt;{</span>
 
     @Autowired
     private ClientDao clientDao;
 
+    @PostConstruct
+    public void logClassLoader() {
+<span class="fc" id="L20">        System.out.println(&quot;ClientApi classloader: &quot; + this.getClass().getClassLoader());</span>
+<span class="fc" id="L21">    }</span>
+
     @Transactional
     public void add(Client client) throws ApiException {
-<span class="nc" id="L19">        Client existingClient = clientDao.findByName(client.getClientName());</span>
-<span class="nc" id="L20">        AbstractApi.ifExists(existingClient);</span>
-<span class="nc" id="L21">        clientDao.add(client);</span>
-<span class="nc" id="L22">    }</span>
+<span class="nc" id="L25">        Client existingClient = clientDao.findByName(client.getClientName());</span>
+<span class="nc" id="L26">        ifExists(existingClient);</span>
+<span class="nc" id="L27">        clientDao.add(client);</span>
+<span class="nc" id="L28">    }</span>
 
     public Client getCheckById(Integer id) throws ApiException {
-<span class="nc" id="L25">        Client clientPojo = clientDao.findById(id);</span>
-<span class="nc" id="L26">        AbstractApi.ifNotExists(clientPojo);</span>
-<span class="nc" id="L27">        return clientPojo;</span>
+<span class="nc" id="L31">        Client clientPojo = clientDao.findById(id);</span>
+<span class="nc" id="L32">        ifNotExists(clientPojo);</span>
+<span class="nc" id="L33">        return clientPojo;</span>
     }
 
     public Client getById(Integer id) {
-<span class="nc" id="L31">        Client client = clientDao.findById(id);</span>
-<span class="nc" id="L32">        return client;</span>
+<span class="nc" id="L37">        Client client = clientDao.findById(id);</span>
+<span class="nc" id="L38">        return client;</span>
     }
 
     public List&lt;Client&gt; getAll() {
-<span class="nc" id="L36">        return clientDao.findAll();</span>
+<span class="nc" id="L42">        return clientDao.findAll();</span>
     }
 
     @Transactional
     public Client update(Integer id, Client client) throws ApiException {
-<span class="nc" id="L41">        Client oldClient = clientDao.findById(id);</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        if(oldClient.getClientName().equals(client.getClientName())) {</span>
-<span class="nc" id="L43">            throw new ApiException(&quot;Client name already exists&quot;);</span>
-        }
-<span class="nc" id="L45">        oldClient.setClientName(client.getClientName());</span>
-<span class="nc" id="L46">        clientDao.update(oldClient);</span>
-<span class="nc" id="L47">        return oldClient;</span>
+<span class="nc" id="L47">        Client oldClient = clientDao.findById(id);</span>
+<span class="nc" id="L48">        Client checkClient = clientDao.findByName(client.getClientName());</span>
+<span class="nc" id="L49">        ifExists(checkClient);</span>
+<span class="nc" id="L50">        oldClient.setClientName(client.getClientName());</span>
+<span class="nc" id="L51">        return oldClient;</span>
     }
 
-    @Transactional
-    public void delete(Integer id) throws ApiException {
-<span class="nc" id="L52">        Client deleteClient = clientDao.findById(id);</span>
-<span class="nc" id="L53">        AbstractApi.ifNotExists(deleteClient);</span>
-<span class="nc" id="L54">        clientDao.delete(deleteClient);</span>
-<span class="nc" id="L55">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

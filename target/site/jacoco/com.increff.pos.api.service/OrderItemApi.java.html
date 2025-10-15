@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-<span class="nc" id="L13">public class OrderItemApi {</span>
+<span class="fc" id="L13">public class OrderItemApi extends AbstractApi&lt;OrderItem&gt;{</span>
 
     @Autowired
     OrderItemDao orderItemDao;
@@ -26,16 +26,17 @@ import java.util.List;
 
     public OrderItem getById(Integer id) throws ApiException {
 <span class="nc" id="L28">        OrderItem orderItemPojo = orderItemDao.findById(id);</span>
-<span class="nc" id="L29">        AbstractApi.ifNotExists(orderItemPojo);</span>
+<span class="nc" id="L29">        ifNotExists(orderItemPojo);</span>
 <span class="nc" id="L30">        return orderItemPojo;</span>
     }
 
     @Transactional
     public OrderItem update(Integer id, OrderItem orderItem) throws ApiException {
 <span class="nc" id="L35">        OrderItem orderItemExisting = orderItemDao.findById(id);</span>
-<span class="nc" id="L36">        orderItemExisting.setQuantity(orderItem.getQuantity());</span>
-<span class="nc" id="L37">        orderItemExisting.setSellingPrice(orderItem.getSellingPrice());</span>
-<span class="nc" id="L38">        return orderItemExisting;</span>
+<span class="nc" id="L36">        ifNotExists(orderItemExisting);</span>
+<span class="nc" id="L37">        orderItemExisting.setQuantity(orderItem.getQuantity());</span>
+<span class="nc" id="L38">        orderItemExisting.setSellingPrice(orderItem.getSellingPrice());</span>
+<span class="nc" id="L39">        return orderItemExisting;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

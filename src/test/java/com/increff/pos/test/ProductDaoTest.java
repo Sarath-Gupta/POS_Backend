@@ -1,9 +1,7 @@
 package com.increff.pos.test;
 
-import com.increff.pos.config.DbConfig;
-import com.increff.pos.dao.ClientDao;
+import com.increff.pos.config.TestConfig;
 import com.increff.pos.dao.ProductDao;
-import com.increff.pos.entity.Client;
 import com.increff.pos.entity.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,78 +12,107 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = DbConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
+@Transactional // Ensures test isolation and rollback
 public class ProductDaoTest {
 
     @Autowired
-    private ProductDao productRepository;
+    private ProductDao productDao;
 
-    @Autowired
-    private ClientDao clientRepository;
+    private Product createProduct(String barcode, Integer clientId, String name, Double mrp) {
+        Product p = new Product();
+        p.setBarcode(barcode);
+        p.setClientId(clientId);
+        p.setName(name);
+        p.setMrp(mrp);
+        p.setImgUrl("https://placehold.it/100x100");
+        productDao.add(p);
+        return p;
+    }
 
-    private Client createClient(String clientName) {
-        Client client = new Client();
-        client.setClientName(clientName);
-        clientRepository.add(client);
-        return client;
+
+    @Test
+    public void testAddAndFindById() {
+        Product product1 = createProduct("BAR123", 1, "Milk Chocolate", 50.0);
+        assertNotNull("Product ID should be generated after add", product1.getId());
+
+        Product found = productDao.findById(product1.getId());
+
+        assertNotNull("Product should be found by ID", found);
+        assertEquals("Barcode should match", "BAR123", found.getBarcode());
     }
 
     @Test
-    @Transactional
-    public void testInsert() {
-        Client client = createClient("client1");
-        Product product = new Product();
-        product.setBarcode("barcode1");
-        product.setClientId(client.getId());
-        product.setName("product1");
-        product.setMrp(10.0);
-        product.setImgUrl("url1");
-        productRepository.add(product);
-        assertNotNull(product.getId());
+    public void testFindAll() {
+        createProduct("SKU1", 1, "A", 10.0);
+        createProduct("SKU2", 2, "B", 20.0);
+
+        List<Product> list = productDao.findAll();
+
+        assertEquals("FindAll should return 2 products", 2, list.size());
+    }
+
+
+    @Test
+    public void testFindByBarcode_Found() {
+        createProduct("TARGETCODE", 101, "Target Product", 100.0);
+
+        Product found = productDao.findByBarcode("TARGETCODE");
+
+        assertNotNull("Product should be found by barcode", found);
+        assertEquals("Barcode should match lookup key", "TARGETCODE", found.getBarcode());
     }
 
     @Test
-    @Transactional
-    public void testFindByBarcode() {
-        Client client = createClient("client2");
-        Product product = new Product();
-        product.setBarcode("barcode2");
-        product.setClientId(client.getId());
-        product.setName("product2");
-        product.setMrp(20.0);
-        product.setImgUrl("url2");
-        productRepository.add(product);
-
-        Product retrievedProduct = productRepository.findByBarcode("barcode2");
-        assertNotNull(retrievedProduct);
-        assertEquals("barcode2", retrievedProduct.getBarcode());
-    }
-
-    @Test
-    @Transactional
     public void testFindByClientId() {
-        Client client = createClient("client3");
-        Product product1 = new Product();
-        product1.setBarcode("barcode3");
-        product1.setClientId(client.getId());
-        product1.setName("product3");
-        product1.setMrp(30.0);
-        product1.setImgUrl("url3");
-        productRepository.add(product1);
+        createProduct("A1", 5, "Product A", 10.0);
+        createProduct("B2", 10, "Product B", 20.0);
+        createProduct("C3", 5, "Product C", 30.0);
 
-        Product product2 = new Product();
-        product2.setBarcode("barcode4");
-        product2.setClientId(client.getId());
-        product2.setName("product4");
-        product2.setMrp(40.0);
-        product2.setImgUrl("url4");
-        productRepository.add(product2);
+        List<Product> results = productDao.findByClientId(5);
 
-        List<Product> products = productRepository.findByClientId(client.getId());
-        assertEquals(2, products.size());
+        assertEquals("Should find exactly 2 products for client ID 5", 2, results.size());
+        assertTrue("Results should contain Product C",
+                results.stream().anyMatch(p -> p.getName().equals("Product C")));
+        results.forEach(p -> assertEquals("All returned products must have client ID 5", (Integer) 5, p.getClientId()));
+    }
+
+    @Test
+    public void testFindByName_Found() {
+        createProduct("XXY", 1, "Specific Item", 15.0);
+
+        Product found = productDao.findByName("Specific Item");
+
+        assertNotNull("Product should be found by name", found);
+    }
+
+    @Test
+    public void testFindByName_NotFound() {
+        createProduct("ZZZ", 1, "Apples", 1.0);
+
+        Product notFound = productDao.findByName("Missing Name");
+
+        assertNull("findByName should return null if product is not found", notFound);
+    }
+
+    @Test
+    public void testFindByMrpBetween() {
+        createProduct("P1", 1, "Cheap", 5.0);
+        createProduct("P2", 1, "Mid-Low", 49.99);
+        createProduct("P3", 1, "Mid-High", 100.0);
+        createProduct("P4", 1, "Expensive", 100.01);
+
+        Double minMrp = 10.0;
+        Double maxMrp = 100.0;
+
+        List<Product> results = productDao.findByMrpBetween(minMrp, maxMrp);
+
+        assertEquals("Should find exactly 2 products within the [49.99, 100.0] range", 2, results.size());
+
+        assertTrue(results.stream().anyMatch(p -> p.getName().equals("Mid-Low")));
+        assertTrue(results.stream().anyMatch(p -> p.getName().equals("Mid-High")));
     }
 }

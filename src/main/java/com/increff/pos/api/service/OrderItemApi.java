@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class OrderItemApi {
+public class OrderItemApi extends AbstractApi<OrderItem>{
 
     @Autowired
     OrderItemDao orderItemDao;
@@ -26,13 +26,14 @@ public class OrderItemApi {
 
     public OrderItem getById(Integer id) throws ApiException {
         OrderItem orderItemPojo = orderItemDao.findById(id);
-        AbstractApi.ifNotExists(orderItemPojo);
+        ifNotExists(orderItemPojo);
         return orderItemPojo;
     }
 
     @Transactional
     public OrderItem update(Integer id, OrderItem orderItem) throws ApiException {
         OrderItem orderItemExisting = orderItemDao.findById(id);
+        ifNotExists(orderItemExisting);
         orderItemExisting.setQuantity(orderItem.getQuantity());
         orderItemExisting.setSellingPrice(orderItem.getSellingPrice());
         return orderItemExisting;

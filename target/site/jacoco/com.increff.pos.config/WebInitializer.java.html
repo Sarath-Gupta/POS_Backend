@@ -6,12 +6,12 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
     @Override
     protected Class&lt;?&gt;[] getRootConfigClasses() {
-<span class="nc" id="L9">        return new Class[] {};</span>
+<span class="nc" id="L9">        return new Class[] { DbConfig.class, SecurityConfig.class };</span>
     }
 
     @Override
     protected Class&lt;?&gt;[] getServletConfigClasses() {
-<span class="nc" id="L14">        return new Class[] { SpringConfig.class };</span>
+<span class="nc" id="L14">        return new Class[] { SpringConfig.class, SwaggerConfig.class };</span>
     }
 
     @Override
@@ -20,4 +20,5 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
     }
 
 }
+
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

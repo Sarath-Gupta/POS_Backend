@@ -19,22 +19,22 @@ import java.util.List;
 
     @Transactional
     public Inventory findByProductId(Integer productId) {
-<span class="nc" id="L22">        TypedQuery&lt;Inventory&gt; query = getEntityManager()</span>
-<span class="nc" id="L23">                .createQuery(SELECT_BY_PRODUCT_ID, Inventory.class);</span>
-<span class="nc" id="L24">        query.setParameter(&quot;productId&quot;, productId);</span>
+<span class="fc" id="L22">        TypedQuery&lt;Inventory&gt; query = getEntityManager()</span>
+<span class="fc" id="L23">                .createQuery(SELECT_BY_PRODUCT_ID, Inventory.class);</span>
+<span class="fc" id="L24">        query.setParameter(&quot;productId&quot;, productId);</span>
         try {
-<span class="nc" id="L26">            return query.getSingleResult();</span>
-<span class="nc" id="L27">        } catch (NoResultException e) {</span>
-<span class="nc" id="L28">            return null;</span>
+<span class="fc" id="L26">            return query.getSingleResult();</span>
+<span class="fc" id="L27">        } catch (NoResultException e) {</span>
+<span class="fc" id="L28">            return null;</span>
         }
     }
 
     public List&lt;Inventory&gt; findByQuantityBetween(Integer min, Integer max) {
-<span class="nc" id="L33">        TypedQuery&lt;Inventory&gt; query = getEntityManager()</span>
-<span class="nc" id="L34">                .createQuery(SELECT_BETWEEN_QUANTITY, Inventory.class);</span>
-<span class="nc" id="L35">        query.setParameter(&quot;min&quot;, min);</span>
-<span class="nc" id="L36">        query.setParameter(&quot;max&quot;, max);</span>
-<span class="nc" id="L37">        return query.getResultList();</span>
+<span class="fc" id="L33">        TypedQuery&lt;Inventory&gt; query = getEntityManager()</span>
+<span class="fc" id="L34">                .createQuery(SELECT_BETWEEN_QUANTITY, Inventory.class);</span>
+<span class="fc" id="L35">        query.setParameter(&quot;min&quot;, min);</span>
+<span class="fc" id="L36">        query.setParameter(&quot;max&quot;, max);</span>
+<span class="fc" id="L37">        return query.getResultList();</span>
     }
 
     public List&lt;Inventory&gt; findByDateBetween(LocalDate startDate, LocalDate endDate) {

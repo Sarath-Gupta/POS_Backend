@@ -34,22 +34,22 @@ import java.util.List;
     }
 
     public Product findByName(String name) {
-<span class="nc" id="L37">        TypedQuery&lt;Product&gt; query = getEntityManager()</span>
-<span class="nc" id="L38">                .createQuery(SELECT_BY_NAME, Product.class);</span>
-<span class="nc" id="L39">        query.setParameter(&quot;name&quot;,name);</span>
+<span class="fc" id="L37">        TypedQuery&lt;Product&gt; query = getEntityManager()</span>
+<span class="fc" id="L38">                .createQuery(SELECT_BY_NAME, Product.class);</span>
+<span class="fc" id="L39">        query.setParameter(&quot;name&quot;,name);</span>
         try {
-<span class="nc" id="L41">            return query.getSingleResult();</span>
-<span class="nc" id="L42">        } catch (NoResultException e) {</span>
-<span class="nc" id="L43">            return null;</span>
+<span class="fc" id="L41">            return query.getSingleResult();</span>
+<span class="fc" id="L42">        } catch (NoResultException e) {</span>
+<span class="fc" id="L43">            return null;</span>
         }
     }
 
     public List&lt;Product&gt; findByMrpBetween(Double minMrp, Double maxMrp) {
-<span class="nc" id="L48">        TypedQuery&lt;Product&gt; query = getEntityManager()</span>
-<span class="nc" id="L49">                .createQuery(SELECT_BY_MRP_RANGE, Product.class);</span>
-<span class="nc" id="L50">        query.setParameter(&quot;minMrp&quot;, minMrp);</span>
-<span class="nc" id="L51">        query.setParameter(&quot;maxMrp&quot;, maxMrp);</span>
-<span class="nc" id="L52">        return query.getResultList();</span>
+<span class="fc" id="L48">        TypedQuery&lt;Product&gt; query = getEntityManager()</span>
+<span class="fc" id="L49">                .createQuery(SELECT_BY_MRP_RANGE, Product.class);</span>
+<span class="fc" id="L50">        query.setParameter(&quot;minMrp&quot;, minMrp);</span>
+<span class="fc" id="L51">        query.setParameter(&quot;maxMrp&quot;, maxMrp);</span>
+<span class="fc" id="L52">        return query.getResultList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

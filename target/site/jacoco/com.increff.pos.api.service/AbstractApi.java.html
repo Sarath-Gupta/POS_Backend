@@ -2,20 +2,31 @@
 
 import com.increff.pos.commons.ApiException;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
-<span class="nc" id="L7">public class AbstractApi {</span>
-    public static void ifNotExists(Object obj) throws ApiException{
-<span class="nc bnc" id="L9" title="All 2 branches missed.">        if(Objects.isNull(obj)) {</span>
-            //TODO: also take entity name as input param for better error message
-<span class="nc" id="L11">            throw new ApiException(&quot;Object doesn't exist&quot;);</span>
-        }
-<span class="nc" id="L13">    }</span>
+public class AbstractApi&lt;T&gt; {
+    private final Class&lt;T&gt; entityClass;
 
-    public static void ifExists(Object obj) throws ApiException {
-<span class="nc bnc" id="L16" title="All 2 branches missed.">        if(!Objects.isNull(obj)) {</span>
-<span class="nc" id="L17">            throw new ApiException(&quot;Object does exist&quot;);</span>
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L12">    public AbstractApi() {</span>
+<span class="fc" id="L13">        this.entityClass = (Class&lt;T&gt;) ((ParameterizedType) getClass()</span>
+<span class="fc" id="L14">                .getGenericSuperclass())</span>
+<span class="fc" id="L15">                .getActualTypeArguments()[0];</span>
+<span class="fc" id="L16">    }</span>
+
+    public void ifNotExists(Object obj) throws ApiException{
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if(Objects.isNull(obj)) {</span>
+<span class="nc" id="L20">            String message = entityClass.getSimpleName() + &quot; doesn't exist&quot;;</span>
+<span class="nc" id="L21">            throw new ApiException(message);</span>
         }
-<span class="nc" id="L19">    }</span>
+<span class="nc" id="L23">    }</span>
+
+    public void ifExists(Object obj) throws ApiException {
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if(!Objects.isNull(obj)) {</span>
+<span class="nc" id="L27">            String message = entityClass.getSimpleName();</span>
+<span class="nc" id="L28">            throw new ApiException(message + &quot; already exists&quot;);</span>
+        }
+<span class="nc" id="L30">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

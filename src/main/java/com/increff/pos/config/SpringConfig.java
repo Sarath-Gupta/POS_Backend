@@ -4,17 +4,25 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.increff.pos")
-class SpringConfig implements WebMvcConfigurer {
+
+@ComponentScan(
+        basePackages = "com.increff.pos.controller",
+        useDefaultFilters = false,
+        includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)
+)
+public class SpringConfig implements WebMvcConfigurer {
 
     @Bean
     public ModelMapper modelMapper() {
@@ -28,10 +36,8 @@ class SpringConfig implements WebMvcConfigurer {
 
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        return multipartResolver;
+        return new CommonsMultipartResolver();
     }
-
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -43,10 +49,17 @@ class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
+        // These are for serving Swagger UI
+        registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
-
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        // Redirect helper so Swagger UI loads with the correct docs URL under context path
+        registry.addRedirectViewController("/swagger", "/swagger-ui.html?url=/pos/v2/api-docs");
+    }
 }
+

@@ -25,9 +25,8 @@ import javax.validation.constraints.*;
     @Positive(message = &quot;MRP must be a positive value&quot;)
 <span class="nc" id="L26">    private Double mrp;</span>
 
-    @NotBlank(message = &quot;Image URL is empty&quot;)
     @Size(max = 255, message = &quot;Image URL is too long&quot;)
     @URL(message = &quot;Image URL is not valid&quot;)
-<span class="nc" id="L31">    private String imgUrl;</span>
+<span class="nc" id="L30">    private String imgUrl;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -10,10 +10,6 @@ import javax.validation.constraints.Positive;
 @Setter
 
 public class InventoryForm {
-    @NotNull(message = "Product ID cannot be empty")
-    @Positive(message = "Product ID must be positive")
-    private Integer productId;
-
     @NotNull(message = "Quantity cannot be empty")
     @Max(value = 255, message = "Quantity cannot exceed 255")
     private Integer quantity;

@@ -6,6 +6,7 @@ import com.increff.pos.commons.ApiException;
 import com.increff.pos.model.data.ProductData;
 import com.increff.pos.model.form.ProductForm;
 import com.increff.pos.entity.Product;
+import com.increff.pos.model.form.ProductUpdateForm;
 import com.increff.pos.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -65,11 +66,11 @@ public class ProductDto {
         return mapper.convert(productList, ProductData.class);
     }
 
-    public ProductData update(Integer id, ProductForm productForm) throws ApiException {
+    public ProductData update(Integer id, ProductUpdateForm productForm) throws ApiException {
         NormalizeUtil.normalize(productForm);
         validationUtil.validate(productForm);
         Product pojo = mapper.convert(productForm, Product.class);
-        productApi.update(id,pojo);
-        return mapper.convert(pojo, ProductData.class);
+        Product updatedPojo = productApi.update(id,pojo);
+        return mapper.convert(updatedPojo, ProductData.class);
     }
 }
