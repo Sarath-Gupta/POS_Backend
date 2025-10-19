@@ -2,12 +2,14 @@ package com.increff.pos.controller;
 
 import com.increff.pos.commons.ApiException;
 import com.increff.pos.dto.OrdersDto;
+import com.increff.pos.model.data.ClientData;
+import com.increff.pos.model.data.InvoiceData;
 import com.increff.pos.model.data.OrderData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,12 +21,22 @@ public class OrderController {
     OrdersDto ordersDto;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<OrderData> getAll() {
-        return ordersDto.getAll();
+    public Page<OrderData> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) throws ApiException {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return ordersDto.getAll(pageable);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public OrderData getById(@PathVariable("id") Integer id) throws ApiException {
         return ordersDto.getById(id);
     }
+
+    @RequestMapping(value = "/api/order/{orderId}/finalize", method = RequestMethod.POST)
+    public InvoiceData finalizeOrder(@PathVariable Integer orderId) throws ApiException {
+        return ordersDto.finalizeOrder(orderId);
+    }
+
 }

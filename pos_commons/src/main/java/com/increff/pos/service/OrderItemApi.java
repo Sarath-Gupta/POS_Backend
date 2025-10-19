@@ -4,6 +4,8 @@ import com.increff.pos.commons.ApiException;
 import com.increff.pos.dao.OrderItemDao;
 import com.increff.pos.entity.OrderItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +22,8 @@ public class OrderItemApi extends AbstractApi<OrderItem>{
         orderItemDao.add(orderItem);
     }
 
-    public List<OrderItem> getAll() {
-        return orderItemDao.findAll();
+    public Page<OrderItem> getAll(Pageable pageable) {
+        return orderItemDao.findAll(pageable);
     }
 
     public OrderItem getById(Integer id) throws ApiException {

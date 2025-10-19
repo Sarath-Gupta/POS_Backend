@@ -35,6 +35,7 @@ com/increff/pos/model/data/ProductData.class
 com/increff/pos/dao/ProductDao.class
 com/increff/pos/service/InventoryApi.class
 com/increff/pos/model/data/RevenueTrendData.class
+com/increff/pos/model/data/InvoiceRequest.class
 com/increff/pos/dao/UserDao.class
 com/increff/pos/entity/Inventory.class
 com/increff/pos/model/form/OrderForm.class
@@ -42,6 +43,7 @@ com/increff/pos/service/ReportApi.class
 com/increff/pos/util/ProductUtil.class
 com/increff/pos/model/form/ProductForm.class
 com/increff/pos/model/data/ClientData.class
+com/increff/pos/commons/OrderStatus.class
 com/increff/pos/dao/AbstractDao.class
 com/increff/pos/dao/ClientDao.class
 com/increff/pos/config/TestConfig.class

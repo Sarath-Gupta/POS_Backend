@@ -19,6 +19,7 @@ com/increff/pos/dto/OrdersDto.class
 com/increff/pos/config/TestConfig.class
 com/increff/pos/flow/OrderItemFlow.class
 com/increff/pos/dto/OrderItemDto.class
+com/increff/pos/flow/OrderFlow.class
 com/increff/pos/config/SwaggerConfig.class
 com/increff/pos/controller/ControllerAdvice$1.class
 com/increff/pos/controller/UserController.class

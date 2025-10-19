@@ -9,6 +9,8 @@ import com.increff.pos.entity.Product;
 import com.increff.pos.model.form.ProductUpdateForm;
 import com.increff.pos.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,9 +63,9 @@ public class ProductDto {
         return mapper.convert(productPojo, ProductData.class);
     }
 
-    public List<ProductData> getAll() {
-        List<Product> productList = productApi.getAll();
-        return mapper.convert(productList, ProductData.class);
+    public Page<ProductData> getAll(Pageable pageable) {
+        Page<Product> productPage = productApi.getAll(pageable);
+        return productPage.map(product -> mapper.convert(product, ProductData.class));
     }
 
     public ProductData update(Integer id, ProductUpdateForm productForm) throws ApiException {

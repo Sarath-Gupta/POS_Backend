@@ -1,5 +1,7 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.entity.Client;
+import com.increff.pos.model.data.ClientData;
 import com.increff.pos.service.OrderItemApi;
 import com.increff.pos.flow.OrderItemFlow;
 import com.increff.pos.commons.ApiException;
@@ -9,6 +11,8 @@ import com.increff.pos.entity.OrderItem;
 import com.increff.pos.util.AbstractMapper;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -34,9 +38,9 @@ public class OrderItemDto {
         return mapper.convert(listPojo, OrderItemData.class);
     }
 
-    public List<OrderItemData> getAll() {
-        List<OrderItem> listPojo= orderItemApi.getAll();
-        return mapper.convert(listPojo, OrderItemData.class);
+    public Page<OrderItemData> getAll(Pageable pageable) {
+        Page<OrderItem> orderItemPage = orderItemApi.getAll(pageable);
+        return orderItemPage.map(orderItem -> mapper.convert(orderItem, OrderItemData.class));
     }
 
     public OrderItemData getById(Integer id) throws ApiException {

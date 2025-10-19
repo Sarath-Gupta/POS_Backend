@@ -4,6 +4,8 @@ import com.increff.pos.dao.ClientDao;
 import com.increff.pos.entity.Client;
 import com.increff.pos.commons.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
@@ -38,8 +40,8 @@ public class ClientApi extends AbstractApi<Client>{
         return client;
     }
 
-    public List<Client> getAll() {
-        return clientDao.findAll();
+    public Page<Client> getAll(Pageable pageable) {
+        return clientDao.findAll(pageable);
     }
 
     @Transactional

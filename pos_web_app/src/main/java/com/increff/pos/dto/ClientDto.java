@@ -10,6 +10,8 @@ import com.increff.pos.util.ClientUtil;
 import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,9 +66,9 @@ public class ClientDto {
         return mapper.convert(clientPojo, ClientData.class);
     }
 
-    public List<ClientData> getAll() {
-        List<Client> list = clientApi.getAll();
-        return mapper.convert(list, ClientData.class);
+    public Page<ClientData> getAll(Pageable pageable) {
+        Page<Client> clientPage = clientApi.getAll(pageable);
+        return clientPage.map(client -> mapper.convert(client, ClientData.class));
     }
 
     public ClientData update(Integer id, ClientForm clientForm) throws ApiException {

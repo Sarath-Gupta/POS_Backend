@@ -1,5 +1,7 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.entity.Client;
+import com.increff.pos.model.data.ClientData;
 import com.increff.pos.service.InventoryApi;
 import com.increff.pos.commons.ApiException;
 import com.increff.pos.model.data.InventoryData;
@@ -8,6 +10,8 @@ import com.increff.pos.entity.Inventory;
 import com.increff.pos.util.AbstractMapper;
 import com.increff.pos.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,8 +40,8 @@ public class InventoryDto {
         return mapper.convert(inventory, InventoryData.class);
     }
 
-    public List<InventoryData> getAll() {
-        List<Inventory> inventoryList = inventoryApi.getAll();
-        return mapper.convert(inventoryList, InventoryData.class);
+    public Page<InventoryData> getAll(Pageable pageable) {
+        Page<Inventory> inventoryPage = inventoryApi.getAll(pageable);
+        return inventoryPage.map(inventory -> mapper.convert(inventory, InventoryData.class));
     }
 }

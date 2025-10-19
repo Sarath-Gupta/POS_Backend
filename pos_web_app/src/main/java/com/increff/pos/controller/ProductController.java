@@ -10,6 +10,9 @@ import com.increff.pos.model.form.ProductUpdateForm;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,8 +43,12 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<ProductData> getAll() {
-        return productDto.getAll();
+    public Page<ProductData> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) throws ApiException {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return productDto.getAll(pageable);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

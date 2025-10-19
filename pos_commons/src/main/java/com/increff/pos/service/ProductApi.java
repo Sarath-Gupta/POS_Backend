@@ -4,6 +4,8 @@ import com.increff.pos.dao.ProductDao;
 import com.increff.pos.commons.ApiException;
 import com.increff.pos.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -28,8 +30,8 @@ public class ProductApi extends AbstractApi<Product>{
         return product;
     }
 
-    public List<Product> getAll() {
-        return productDao.findAll();
+    public Page<Product> getAll(Pageable pageable) {
+        return productDao.findAll(pageable);
     }
 
     @Transactional

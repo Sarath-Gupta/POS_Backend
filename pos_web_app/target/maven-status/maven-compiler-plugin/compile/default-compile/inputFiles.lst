@@ -20,5 +20,6 @@
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/dto/ProductDto.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/dto/ReportDto.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/dto/UserDto.java
+/Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/flow/OrderFlow.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/flow/OrderItemFlow.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/flow/ProductFlow.java

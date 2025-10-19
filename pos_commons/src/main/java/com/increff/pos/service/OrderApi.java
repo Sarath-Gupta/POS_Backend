@@ -4,6 +4,8 @@ import com.increff.pos.commons.ApiException;
 import com.increff.pos.dao.OrdersDao;
 import com.increff.pos.entity.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -19,8 +21,8 @@ public class OrderApi extends AbstractApi<Orders>{
         ordersDao.add(order);
     }
 
-    public List<Orders> getAll() {
-        return ordersDao.findAll();
+    public Page<Orders> getAll(Pageable pageable) {
+        return ordersDao.findAll(pageable);
     }
 
     public Orders getById(Integer id) throws ApiException {
@@ -28,4 +30,5 @@ public class OrderApi extends AbstractApi<Orders>{
         ifNotExists(order);
         return order;
     }
+
 }

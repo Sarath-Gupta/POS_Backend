@@ -4,9 +4,13 @@ import java.util.List;
 
 import com.increff.pos.commons.ApiException;
 import com.increff.pos.dto.OrderItemDto;
+import com.increff.pos.model.data.ClientData;
 import com.increff.pos.model.data.OrderItemData;
 import com.increff.pos.model.form.OrderItemForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +26,12 @@ public class OrderItemController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<OrderItemData> getAll() {
-        return orderItemDto.getAll();
+    public Page<OrderItemData> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) throws ApiException {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return orderItemDto.getAll(pageable);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
