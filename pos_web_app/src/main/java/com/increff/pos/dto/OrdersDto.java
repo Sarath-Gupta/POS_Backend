@@ -35,7 +35,13 @@ public class OrdersDto {
     }
 
     public InvoiceData finalizeOrder(Integer orderId) throws ApiException{
+        orderApi.getById(orderId);
         return orderFlow.finalizeOrder(orderId);
+    }
+
+    public void cancelOrder(Integer orderId) throws ApiException {
+        orderApi.getById(orderId);
+        orderFlow.cancelOrder(orderId);
     }
 
 }

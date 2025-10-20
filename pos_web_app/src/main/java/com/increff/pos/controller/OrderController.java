@@ -2,7 +2,6 @@ package com.increff.pos.controller;
 
 import com.increff.pos.commons.ApiException;
 import com.increff.pos.dto.OrdersDto;
-import com.increff.pos.model.data.ClientData;
 import com.increff.pos.model.data.InvoiceData;
 import com.increff.pos.model.data.OrderData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -37,6 +34,11 @@ public class OrderController {
     @RequestMapping(value = "/api/order/{orderId}/finalize", method = RequestMethod.POST)
     public InvoiceData finalizeOrder(@PathVariable Integer orderId) throws ApiException {
         return ordersDto.finalizeOrder(orderId);
+    }
+
+    @RequestMapping(value = "/cancel/{orderId}", method = RequestMethod.PUT)
+    public void cancelOrder(@PathVariable Integer orderId) throws ApiException {
+        ordersDto.cancelOrder(orderId);
     }
 
 }

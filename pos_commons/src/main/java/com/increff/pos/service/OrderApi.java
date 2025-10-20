@@ -31,4 +31,12 @@ public class OrderApi extends AbstractApi<Orders>{
         return order;
     }
 
+    public void updateStatusToInvoiced(Integer orderId) {
+        ordersDao.updateStatusToInvoiced(orderId);
+    }
+
+    public void cancelOrder(Integer orderId) {
+        ordersDao.cancelOrder(orderId);
+    }
+
 }
