@@ -30,22 +30,29 @@ public class OrderItemFlow {
 
     @Transactional
     public void add(List<OrderItem> list) throws ApiException {
+
         for(OrderItem orderItem : list) {
             Integer productId = orderItem.getProductId();
             validateProduct(orderItem, productId);
             inventoryApi.checkStock(productId, orderItem.getQuantity());
         }
-
         Orders order = new Orders();
+        order.setTotal_amount(0.0);
         orderApi.add(order);
-
+        Integer generatedOrderId = order.getId();
+        Orders orderGenerated = orderApi.getById(generatedOrderId);
+        Double grandTotal = 0.0;
         for(OrderItem orderItem : list) {
             Integer productId = orderItem.getProductId();
             Integer quantityOrdered = orderItem.getQuantity();
-            orderItem.setOrderId(order.getId());
+            orderItem.setOrderId(generatedOrderId);
             orderItemApi.add(orderItem);
+            grandTotal += (quantityOrdered * orderItem.getSellingPrice());
             inventoryApi.reduceStock(productId, quantityOrdered);
         }
+
+        orderGenerated.setTotal_amount(grandTotal);
+        orderApi.update(orderGenerated);
     }
 
     private void validateProduct(OrderItem orderItem, Integer productId) throws ApiException{

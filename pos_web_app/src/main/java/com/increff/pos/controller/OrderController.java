@@ -21,7 +21,6 @@ public class OrderController {
     public Page<OrderData> getAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) throws ApiException {
-
         Pageable pageable = PageRequest.of(page, size);
         return ordersDto.getAll(pageable);
     }

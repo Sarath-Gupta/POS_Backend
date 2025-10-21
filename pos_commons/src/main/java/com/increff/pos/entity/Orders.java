@@ -18,4 +18,6 @@ public class Orders extends BaseEntity {
     @Column(unique = true, nullable = false)
     private OrderStatus status = OrderStatus.CREATED;
 
+    private Double total_amount;
+
 }

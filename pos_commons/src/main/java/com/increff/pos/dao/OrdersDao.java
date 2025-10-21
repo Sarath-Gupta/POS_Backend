@@ -13,11 +13,11 @@ public class OrdersDao extends AbstractDao<Orders> {
     public static final String UPDATE_STATUS_CANCELLED = "UPDATE Orders SET status = 'CANCELLED' WHERE id = :orderId";
 
     @Transactional
-    public int updateStatusToInvoiced(Integer orderId) {
+    public void updateStatusToInvoiced(Integer orderId) {
         Query query = getEntityManager()
                 .createQuery(UPDATE_STATUS_INVOICED);
         query.setParameter("orderId", orderId);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     @Transactional

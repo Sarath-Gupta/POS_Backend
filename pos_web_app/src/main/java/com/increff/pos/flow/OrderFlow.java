@@ -7,7 +7,6 @@ import com.increff.pos.entity.OrderItem;
 import com.increff.pos.entity.Orders;
 import com.increff.pos.model.data.InvoiceData;
 import com.increff.pos.model.data.InvoiceRequest;
-import com.increff.pos.model.data.OrderData;
 import com.increff.pos.service.InventoryApi;
 import com.increff.pos.service.OrderApi;
 import com.increff.pos.service.OrderItemApi;

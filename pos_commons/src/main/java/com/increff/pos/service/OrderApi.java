@@ -39,4 +39,8 @@ public class OrderApi extends AbstractApi<Orders>{
         ordersDao.cancelOrder(orderId);
     }
 
+    public void update(Orders order) {
+        ordersDao.update(order);
+    }
+
 }

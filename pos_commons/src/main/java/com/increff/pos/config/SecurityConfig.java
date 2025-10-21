@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui/**"
                 ).permitAll()
                 .antMatchers("/users/login", "/users/signup", "/users/logout").permitAll()
-                .antMatchers("/inventory/**", "/reports/**").hasRole("SUPERVISOR")
+                .antMatchers("/inventory/**", "/reports/**", "/products/**").hasRole("SUPERVISOR")
                 .antMatchers("/**").hasAnyRole("OPERATOR", "SUPERVISOR")
                 .anyRequest().authenticated()
                 .and()

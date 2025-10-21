@@ -1,10 +1,9 @@
 package com.increff.pos.util;
 
-import com.increff.pos.model.form.ClientForm;
-import com.increff.pos.model.form.ProductForm;
-import com.increff.pos.model.form.ProductUpdateForm;
-import com.increff.pos.model.form.UserForm;
+import com.increff.pos.model.form.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
 
 
 public class NormalizeUtil {
@@ -26,6 +25,6 @@ public class NormalizeUtil {
     public static void normalize(UserForm userForm) {
         userForm.setEmail(userForm.getEmail().trim().toLowerCase());
         userForm.setPassword(userForm.getPassword().trim());
-
     }
+
 }

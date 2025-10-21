@@ -1,10 +1,8 @@
 package com.increff.pos.controller;
 
 import java.util.List;
-
 import com.increff.pos.commons.ApiException;
 import com.increff.pos.dto.OrderItemDto;
-import com.increff.pos.model.data.ClientData;
 import com.increff.pos.model.data.OrderItemData;
 import com.increff.pos.model.form.OrderItemForm;
 import org.springframework.beans.factory.annotation.Autowired;
