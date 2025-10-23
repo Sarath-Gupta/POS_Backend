@@ -30,7 +30,12 @@ public class SpringConfig implements WebMvcConfigurer {
         return new ModelMapper();
     }
 
-
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper;
+    }
 
     @Bean
     public LocalValidatorFactoryBean validator() {

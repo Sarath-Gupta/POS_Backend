@@ -5,6 +5,7 @@ com/increff/pos/flow/ProductFlow.class
 com/increff/pos/config/SecurityConfig.class
 com/increff/pos/controller/ProductController.class
 com/increff/pos/dto/ClientDto.class
+com/increff/pos/config/SecurityWebApplicationInitializer.class
 com/increff/pos/dto/ReportDto.class
 com/increff/pos/controller/OrderController.class
 com/increff/pos/config/SpringConfig.class

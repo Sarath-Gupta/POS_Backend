@@ -46,9 +46,10 @@ public class UserDto {
         if(Objects.isNull(userPojo)) {
             throw new ApiException("Invalid email");
         }
-        String hashedPassword = passwordEncoder.encode(userForm.getPassword());
-        userForm.setPassword(hashedPassword);
-        userApi.login(userPojo);
+        // Check if the provided password matches the stored hashed password
+        if(!passwordEncoder.matches(userForm.getPassword(), userPojo.getPassword())) {
+            throw new ApiException("Invalid password");
+        }
         UserData userData = mapper.convert(userPojo, UserData.class);
         return userData;
     }
