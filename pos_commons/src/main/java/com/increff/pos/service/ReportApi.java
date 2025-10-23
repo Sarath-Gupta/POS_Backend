@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Tuple;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,12 +84,12 @@ public class ReportApi {
         for (Tuple row : results) {
             RevenueTrendData data = new RevenueTrendData();
 
-            ZonedDateTime createdAt = row.get("period", ZonedDateTime.class);
+            LocalDate createdAt = row.get("period", java.sql.Date.class).toLocalDate();
             String formattedPeriod;
             if ("monthly".equals(period)) {
                 formattedPeriod = createdAt.getYear() + "-" + String.format("%02d", createdAt.getMonthValue());
             } else {
-                formattedPeriod = createdAt.toLocalDate().toString();
+                formattedPeriod = createdAt.toString();
             }
             
             data.setPeriod(formattedPeriod);

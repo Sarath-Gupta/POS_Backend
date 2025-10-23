@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         basePackages = "com.increff.pos",
         excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)
 )
-public class DbConfig {
+public class DbConfig{
 
     @Autowired
     private ApplicationProperties properties;

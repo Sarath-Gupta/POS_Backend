@@ -77,15 +77,14 @@ public class ReportDao {
     public List<Tuple> getRevenueTrend(String period) {
         // Simplified query that works with JPQL
         String jpql = "SELECT " +
-                "o.createdAt AS period, " +
+                "date(o.createdAt) AS period, " +
                 "SUM(oi.quantity * oi.sellingPrice) AS revenue, " +
                 "COUNT(DISTINCT o.id) AS orderCount, " +
                 "SUM(oi.quantity) AS itemsSold " +
                 "FROM OrderItem oi, Orders o " +
                 "WHERE oi.orderId = o.id " +
-                "GROUP BY o.createdAt " +
-                "ORDER BY o.createdAt DESC";
-        
+                "GROUP BY DATE(o.createdAt) " +
+                "ORDER BY DATE(o.createdAt) DESC";
         TypedQuery<Tuple> query = em.createQuery(jpql, Tuple.class);
         return query.getResultList();
     }

@@ -14,7 +14,7 @@ import java.util.function.Function;
 public class JwtUtil {
 
     private static final String SECRET_KEY = "pos_secret_key_2024";
-    private static final int JWT_EXPIRATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+    private static final int JWT_EXPIRATION_MS = 5 * 60 * 60 * 1000;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
