@@ -1,6 +1,5 @@
 package com.increff.pos.config;
 
-import com.increff.pos.config.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui/**"
                 ).permitAll()
                 .antMatchers("/users/login", "/users/signup").permitAll()
-                .antMatchers("/inventory/**", "/reports/**").hasRole("SUPERVISOR")
+                .antMatchers("/inventory/update/**","/reports/**").hasRole("SUPERVISOR")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

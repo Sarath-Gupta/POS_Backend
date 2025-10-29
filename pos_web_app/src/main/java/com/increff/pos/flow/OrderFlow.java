@@ -7,20 +7,21 @@ import com.increff.pos.entity.OrderItem;
 import com.increff.pos.entity.Orders;
 import com.increff.pos.model.data.InvoiceData;
 import com.increff.pos.model.data.InvoiceRequest;
+import com.increff.pos.model.data.OrderData;
 import com.increff.pos.service.InventoryApi;
 import com.increff.pos.service.OrderApi;
 import com.increff.pos.service.OrderItemApi;
+import com.increff.pos.util.AbstractMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType; // For setting the content type to JSON
-import org.apache.http.entity.StringEntity; // For wrapping the JSON payload
-import org.apache.http.impl.client.CloseableHttpClient; // For the client object
-import org.apache.http.impl.client.HttpClients; // For creating the default client
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -39,14 +40,18 @@ public class OrderFlow {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    AbstractMapper mapper;
+
 
     public InvoiceData finalizeOrder(Integer orderId) throws ApiException {
         Orders order = orderApi.getById(orderId);
+        OrderData orderData = mapper.convert(order, OrderData.class);
         List<OrderItem> items = orderItemApi.getAllByOrderId(orderId);
         System.out.println(items);
 
         InvoiceRequest requestPayload = new InvoiceRequest();
-        requestPayload.setOrder(order);
+        requestPayload.setOrderData(orderData);
         requestPayload.setOrderItems(items);
 
         String jsonPayload;

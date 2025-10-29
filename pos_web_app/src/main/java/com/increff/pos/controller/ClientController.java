@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/clients")
@@ -28,11 +27,12 @@ public class ClientController {
         return clientDto.add(clientForm);
     }
 
-    @RequestMapping(value = "/file", method = RequestMethod.POST, consumes = "multipart/form-data")
-    @ApiOperation(value = "Upload TSV file with clients")
-    @ApiImplicitParam(name = "file", dataType = "file", paramType = "form", required = true, value = "TSV file to upload")
-    public List<ClientData> addFile(@RequestParam("file") MultipartFile file) throws ApiException {
-        return clientDto.addFile(file);
+    @PostMapping(value = "/file/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "Add TSV file with clients and return results with remarks")
+    @ApiImplicitParam(name = "file", dataType = "file", paramType = "form", required = true, value = "TSV file to add clients")
+    public String addBulkProducts(@RequestParam("file") MultipartFile file) throws ApiException {
+        String tsvContent = clientDto.processTsvWithRemarks(file);
+        return tsvContent;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

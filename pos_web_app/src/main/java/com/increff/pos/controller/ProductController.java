@@ -1,9 +1,7 @@
 package com.increff.pos.controller;
 
-import com.google.protobuf.Api;
 import com.increff.pos.commons.ApiException;
 import com.increff.pos.dto.ProductDto;
-import com.increff.pos.model.data.ClientData;
 import com.increff.pos.model.data.ProductData;
 import com.increff.pos.model.form.ProductForm;
 import com.increff.pos.model.form.ProductUpdateForm;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,11 +29,17 @@ public class ProductController {
         return productDto.add(productForm);
     }
 
-    @RequestMapping(value = "/file", method = RequestMethod.POST, consumes = "multipart/form-data")
-    @ApiOperation(value = "Upload TSV file with products")
-    @ApiImplicitParam(name = "file", dataType = "file", paramType = "form", required = true, value = "TSV file to upload")
-    public List<ProductData> addFile(@RequestParam("file") MultipartFile file) throws ApiException {
-        return productDto.addFile(file);
+    @PostMapping(value = "/file/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "Validate TSV file with products and return results with remarks")
+    @ApiImplicitParam(name = "file", dataType = "file", paramType = "form", required = true, value = "TSV file to validate")
+    public String addBulkProducts(@RequestParam("file") MultipartFile file) {
+        String tsvContent;
+        try {
+            tsvContent = productDto.processTsvWithRemarks(file);
+        } catch (ApiException e) {
+            tsvContent = "barcode\tclientId\tname\tmrp\tRemarks\n" + "\t\t\t\t" + e.getMessage();
+        }
+        return tsvContent;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

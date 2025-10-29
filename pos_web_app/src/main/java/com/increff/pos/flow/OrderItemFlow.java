@@ -1,5 +1,6 @@
 package com.increff.pos.flow;
 
+import com.increff.pos.model.form.OrderItemForm;
 import com.increff.pos.service.OrderApi;
 import com.increff.pos.service.OrderItemApi;
 import com.increff.pos.service.ProductApi;
@@ -11,6 +12,8 @@ import com.increff.pos.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -30,7 +33,6 @@ public class OrderItemFlow {
 
     @Transactional
     public void add(List<OrderItem> list) throws ApiException {
-
         for(OrderItem orderItem : list) {
             Integer productId = orderItem.getProductId();
             validateProduct(orderItem, productId);
@@ -60,5 +62,20 @@ public class OrderItemFlow {
         if(orderItem.getSellingPrice() > product.getMrp()) {
             throw new ApiException("Selling Price cannot be greater than MRP");
         }
+    }
+
+    public List<OrderItem> convert(List<OrderItemForm> listForm) throws ApiException{
+        List<OrderItem> listPojo = new ArrayList<>();
+        for(OrderItemForm orderItemForm : listForm) {
+            Product product = productApi.findByBarcode(orderItemForm.getBarcode());
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setQuantity(orderItemForm.getQuantity());
+            orderItem.setProductId(product.getId());
+            orderItem.setSellingPrice(orderItemForm.getSellingPrice());
+
+            listPojo.add(orderItem);
+        }
+        return listPojo;
     }
 }

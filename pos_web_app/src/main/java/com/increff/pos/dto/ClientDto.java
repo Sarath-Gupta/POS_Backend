@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.model.form.TsvRowResultClient;
 import com.increff.pos.service.ClientApi;
 import com.increff.pos.commons.ApiException;
 import com.increff.pos.model.data.ClientData;
@@ -17,21 +18,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ClientDto {
 
     @Autowired
     ClientApi clientApi;
-    
+
     @Autowired
     AbstractMapper mapper;
 
     @Autowired
     private ValidationUtil validationUtil;
 
+
     public ClientData add(ClientForm clientForm) throws ApiException {
-        //TODO: first do the validation and then normalize
         validationUtil.validate(clientForm);
         NormalizeUtil.normalize(clientForm);
         Client clientPojo = mapper.convert(clientForm, Client.class);
@@ -39,24 +41,51 @@ public class ClientDto {
         return mapper.convert(clientPojo, ClientData.class);
     }
 
-    //TODO: it should return a tsv file as response
-    public List<ClientData> addFile(MultipartFile file) throws ApiException {
+    public String processTsvWithRemarks(MultipartFile file) throws ApiException {
         List<ClientForm> clientForms = ClientUtil.parseTSV(file);
-        List<ClientData> addedClients = new ArrayList<>();
+        List<TsvRowResultClient> results = new ArrayList<>();
+        boolean allValid = true;
         for (ClientForm clientForm : clientForms) {
+            TsvRowResultClient result = new TsvRowResultClient(clientForm);
             try {
-                validationUtil.validate(clientForm);
                 NormalizeUtil.normalize(clientForm);
-                Client clientPojo = mapper.convert(clientForm, Client.class);
-                clientApi.add(clientPojo);
-                addedClients.add(mapper.convert(clientPojo, ClientData.class));
+                validationUtil.validate(clientForm);
+                Client client = mapper.convert(clientForm, Client.class);
+                clientApi.add(client);
+
             } catch (ApiException e) {
-                //TODO: rollback the entire operation if even one of the row is invalid
-                System.out.println("Skipping invalid row: " + clientForm + " Reason: " + e.getMessage());
+                result.setRemarks(e.getMessage());
+                allValid = false;
+            }
+            results.add(result);
+        }
+        if (allValid) {
+            List<Client> clientPojos = results.stream()
+                    .map(r -> mapper.convert(r.form, Client.class))
+                    .collect(Collectors.toList());
+
+            try {
+                for (Client clientPojo : clientPojos) {
+                    clientApi.add(clientPojo);
+                }
+            } catch (ApiException e) {
+                throw new ApiException("Critical Database/Service Error during insertion: " + e.getMessage());
             }
         }
-        return addedClients;
+        return convertResultsToTsvString(results);
     }
+
+    private String convertResultsToTsvString(List<TsvRowResultClient> results) {
+        StringBuilder tsvContent = new StringBuilder();
+        tsvContent.append("clientName\tRemarks\n");
+        for (TsvRowResultClient result : results) {
+            String outputRemarks = result.isValid() ? "" : result.remarks;
+            tsvContent.append(result.form.getClientName()).append("\t")
+                    .append(outputRemarks).append("\n");
+        }
+        return tsvContent.toString();
+    }
+
 
     public ClientData getById(Integer id) throws ApiException {
         Client clientPojo = clientApi.getById(id);
@@ -78,6 +107,4 @@ public class ClientDto {
         Client updatedPojo = clientApi.update(id, clientPojo);
         return mapper.convert(updatedPojo, ClientData.class);
     }
-
-
 }

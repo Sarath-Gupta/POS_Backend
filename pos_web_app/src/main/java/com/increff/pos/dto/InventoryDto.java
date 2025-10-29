@@ -40,8 +40,8 @@ public class InventoryDto {
         return mapper.convert(inventory, InventoryData.class);
     }
 
-    public Page<InventoryData> getAll(Pageable pageable) {
-        Page<Inventory> inventoryPage = inventoryApi.getAll(pageable);
-        return inventoryPage.map(inventory -> mapper.convert(inventory, InventoryData.class));
+    public List<InventoryData> getAll() {
+        List<Inventory> inventoryList = inventoryApi.getAll();
+        return mapper.convert(inventoryList, InventoryData.class);
     }
 }

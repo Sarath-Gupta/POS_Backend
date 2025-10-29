@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.model.form.TsvRowResultProduct;
 import com.increff.pos.service.ProductApi;
 import com.increff.pos.flow.ProductFlow;
 import com.increff.pos.commons.ApiException;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductDto {
@@ -40,21 +42,51 @@ public class ProductDto {
         return mapper.convert(pojo, ProductData.class);
     }
 
-    public List<ProductData> addFile(MultipartFile file) throws ApiException {
+    public String processTsvWithRemarks(MultipartFile file) throws ApiException {
         List<ProductForm> productForms = ProductUtil.parseTSV(file);
-        List<ProductData> addedProducts = new ArrayList<>();
+        List<TsvRowResultProduct> results = new ArrayList<>();
+        boolean allValid = true;
         for (ProductForm productForm : productForms) {
+            TsvRowResultProduct result = new TsvRowResultProduct(productForm);
             try {
-                validationUtil.validate(productForm);
                 NormalizeUtil.normalize(productForm);
-                Product productPojo = mapper.convert(productForm, Product.class);
-                productFlow.add(productPojo);
-                addedProducts.add(mapper.convert(productPojo, ProductData.class));
+                validationUtil.validate(productForm);
+                Product product = mapper.convert(productForm, Product.class);
+                productApi.add(product);
             } catch (ApiException e) {
-                System.out.println("Skipping invalid row: " + productForm + " Reason: " + e.getMessage());
+                result.setRemarks(e.getMessage());
+                allValid = false;
+            }
+            results.add(result);
+        }
+
+        if (allValid) {
+            List<Product> productPojos = results.stream()
+                    .map(r -> mapper.convert(r.form, Product.class))
+                    .collect(Collectors.toList());
+            try {
+                for (Product productPojo : productPojos) {
+                    productApi.add(productPojo);
+                }
+            } catch (ApiException e) {
+                throw new ApiException("Critical Database/Service Error during insertion: " + e.getMessage());
             }
         }
-        return addedProducts;
+        return convertResultsToTsvString(results);
+    }
+
+    private String convertResultsToTsvString(List<TsvRowResultProduct> results) {
+        StringBuilder tsvContent = new StringBuilder();
+        tsvContent.append("barcode\tclientId\tname\tmrp\tRemarks\n");
+        for (TsvRowResultProduct result : results) {
+            String outputRemarks = result.isValid() ? "" : result.remarks;
+            tsvContent.append(result.form.getBarcode()).append("\t")
+                    .append(result.form.getClientId()).append("\t")
+                    .append(result.form.getName()).append("\t")
+                    .append(result.form.getMrp()).append("\t")
+                    .append(outputRemarks).append("\n");
+        }
+        return tsvContent.toString();
     }
 
 

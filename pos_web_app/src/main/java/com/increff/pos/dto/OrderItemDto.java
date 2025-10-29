@@ -1,7 +1,5 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.entity.Client;
-import com.increff.pos.model.data.ClientData;
 import com.increff.pos.service.OrderItemApi;
 import com.increff.pos.flow.OrderItemFlow;
 import com.increff.pos.commons.ApiException;
@@ -34,7 +32,8 @@ public class OrderItemDto {
 
     public List<OrderItemData> add(List<OrderItemForm> listForm) throws ApiException {
         validationUtil.validate(listForm);
-        List<OrderItem> listPojo = mapper.convert(listForm, OrderItem.class);
+        NormalizeUtil.normalize(listForm);
+        List<OrderItem> listPojo = orderItemFlow.convert(listForm);
         orderItemFlow.add(listPojo);
         return mapper.convert(listPojo, OrderItemData.class);
     }

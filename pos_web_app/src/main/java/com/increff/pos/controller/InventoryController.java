@@ -5,22 +5,19 @@ import com.increff.pos.dto.InventoryDto;
 import com.increff.pos.model.data.InventoryData;
 import com.increff.pos.model.form.InventoryForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/inventory")
+@CrossOrigin(origins = "http://localhost:4200")
 public class InventoryController {
 
     @Autowired
     private InventoryDto inventoryDto;
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public InventoryData updateInventory(@PathVariable("id") Integer id, @RequestBody InventoryForm form) throws ApiException {
         return inventoryDto.update(id, form);
     }
@@ -31,11 +28,7 @@ public class InventoryController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<InventoryData> getAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) throws ApiException {
-
-        Pageable pageable = PageRequest.of(page, size);
-        return inventoryDto.getAll(pageable);
+    public List<InventoryData> getAll() throws ApiException {
+        return inventoryDto.getAll();
     }
 }

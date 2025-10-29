@@ -5,25 +5,23 @@ import com.increff.pos.dto.UserDto;
 import com.increff.pos.model.data.JwtResponse;
 import com.increff.pos.model.data.UserData;
 import com.increff.pos.model.form.UserForm;
-import com.increff.pos.util.JwtUtil;
+import com.increff.pos.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     @Autowired
     UserDto userDto;
 
     @Autowired
-    JwtUtil jwtUtil;
+    JwtService jwtService;
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public void signUp(@RequestBody UserForm userForm) throws ApiException {
@@ -33,14 +31,12 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserForm userForm) throws ApiException {
         UserData userData = userDto.login(userForm);
-        String jwt = jwtUtil.generateToken(userData.getEmail(), userData.getRole());
+        String jwt = jwtService.generateToken(userData.getEmail(), userData.getRole());
         return ResponseEntity.ok(new JwtResponse(jwt, userData.getEmail(), userData.getRole()));
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public ResponseEntity<?> logout() {
-        // JWT tokens are stateless, so we just return success
-        // In a production environment, you might want to maintain a blacklist of tokens
         return ResponseEntity.ok("Logout successful");
     }
 
@@ -49,7 +45,6 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();
-            // You can fetch user details from database if needed
             return ResponseEntity.ok("Current user: " + email);
         }
         return ResponseEntity.badRequest().body("Not authenticated");

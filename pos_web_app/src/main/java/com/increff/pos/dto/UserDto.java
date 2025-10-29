@@ -46,7 +46,6 @@ public class UserDto {
         if(Objects.isNull(userPojo)) {
             throw new ApiException("Invalid email");
         }
-        // Check if the provided password matches the stored hashed password
         if(!passwordEncoder.matches(userForm.getPassword(), userPojo.getPassword())) {
             throw new ApiException("Invalid password");
         }
