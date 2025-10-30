@@ -20,26 +20,22 @@
     </modules>
 
     <properties>
-        <!-- Maven configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
 
-        <!-- Project dependencies -->
         <spring.version>5.3.34</spring.version>
         <swagger.version>2.4.0</swagger.version>
         <jackson.version>2.9.8</jackson.version>
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
         <hibernate.version>5.4.0.Final</hibernate.version>
         <mysql.version>8.0.17</mysql.version>
-        <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <h2.version>1.4.200</h2.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <httpclient.version>4.5.13</httpclient.version>
         <jackson.version>2.13.5</jackson.version>
 
-        <!-- UPDATED: Using commons-dbcp2 and its version -->
         <commons-dbcp2.version>2.12.0</commons-dbcp2.version>
 
         <spring.security.version>4.2.13.RELEASE</spring.security.version>
@@ -55,11 +51,9 @@
         <lombok.version>1.18.30</lombok.version>
         <spring-data.version>2021.2.14</spring-data.version>
 
-        <!-- NEW: Version for the missing Jackson datatype -->
         <jackson-datatype-jsr310.version>2.9.8</jackson-datatype-jsr310.version>
         <pdfbox.version>2.0.4</pdfbox.version>
 
-        <!-- Jetty configuration -->
         <jetty.version>9.4.21.v20190926</jetty.version>
         <jetty.http.port>8080</jetty.http.port>
         <jetty.context>/pos</jetty.context>
@@ -246,11 +240,29 @@
 
         <!-- Test Dependencies (Must remain in the <dependencies> block for inheritance) -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.12.2</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.9.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.instancio/instancio-junit -->
+        <dependency>
+            <groupId>org.instancio</groupId>
+            <artifactId>instancio-junit</artifactId>
+            <version>4.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>

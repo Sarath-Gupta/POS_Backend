@@ -57,8 +57,5 @@ public class TestConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new com.increff.pos.service.CustomUserDetailsService();
-    }
+
 }

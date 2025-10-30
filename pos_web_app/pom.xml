@@ -15,10 +15,7 @@
     <name>pos-webapp</name>
 
     <dependencies>
-        <!--
-          FIX: Internal module dependency MUST explicitly declare its version,
-          which is set to the current project version inherited from the parent.
-        -->
+
         <dependency>
             <groupId>com.increff.training</groupId>
             <artifactId>pos_commons</artifactId>
@@ -30,7 +27,6 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
-        <!-- JSON Serialization/Deserialization -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -47,7 +43,6 @@
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
 
-        <!-- It also needs web-specific dependencies (Versions resolved by Parent's Dependency Management) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -74,7 +69,42 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
-        <!-- Database and connection pooling for this app -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.12.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.12.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.9.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>4.9.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.instancio/instancio-junit -->
+        <dependency>
+            <groupId>org.instancio</groupId>
+            <artifactId>instancio-junit</artifactId>
+            <version>4.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -85,7 +115,6 @@
             <artifactId>commons-dbcp2</artifactId>
         </dependency>
 
-        <!-- Spring Security Dependencies -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
@@ -110,7 +139,6 @@
 
     <build>
         <plugins>
-            <!-- Define the maven-war-plugin as the packaging is 'war' -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -119,7 +147,6 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!-- The Jetty plugin configured for your main port (using parent properties) -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>

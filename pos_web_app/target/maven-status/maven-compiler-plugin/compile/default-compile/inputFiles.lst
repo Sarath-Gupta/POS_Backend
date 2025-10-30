@@ -35,7 +35,6 @@
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/flow/ProductFlow.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/service/AbstractApi.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/service/ClientApi.java
-/Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/service/CustomUserDetailsService.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/service/InventoryApi.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/service/JwtService.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/service/OrderApi.java

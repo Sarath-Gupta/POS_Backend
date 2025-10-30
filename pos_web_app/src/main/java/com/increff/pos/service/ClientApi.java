@@ -28,14 +28,14 @@ public class ClientApi extends AbstractApi<Client>{
         clientDao.add(client);
     }
 
-    public Client getCheckById(Integer id) throws ApiException {
-        Client clientPojo = clientDao.findById(id);
-        ifNotExists(clientPojo);
-        return clientPojo;
-    }
-
     public Client getById(Integer id) {
         Client client = clientDao.findById(id);
+        return client;
+    }
+
+    public Client getCheckById(Integer id) throws ApiException{
+        Client client = clientDao.findById(id);
+        ifNotExists(client);
         return client;
     }
 
@@ -45,7 +45,7 @@ public class ClientApi extends AbstractApi<Client>{
 
     @Transactional
     public Client update(Integer id, Client client) throws ApiException {
-        Client oldClient = clientDao.findById(id);
+        Client oldClient = getCheckById(id);
         Client checkClient = clientDao.findByName(client.getClientName());
         ifExists(checkClient);
         oldClient.setClientName(client.getClientName());

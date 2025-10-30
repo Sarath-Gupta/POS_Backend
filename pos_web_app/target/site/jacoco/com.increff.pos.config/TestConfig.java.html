@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TestConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-webapp</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.config</a> &gt; <span class="el_source">TestConfig.java</span></div><h1>TestConfig.java</h1><pre class="source lang-java linenums">package com.increff.pos.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.Properties;
+
+@Configuration
+@ComponentScan(basePackages = {&quot;com.increff.pos.dao&quot;, &quot;com.increff.pos.api&quot;})// CRITICAL: Ensures Spring finds your DAOs, Services, etc.
+@EnableTransactionManagement
+<span class="nc" id="L22">public class TestConfig {</span>
+
+    @Bean
+    public DataSource dataSource() {
+<span class="nc" id="L26">        DriverManagerDataSource dataSource = new DriverManagerDataSource();</span>
+<span class="nc" id="L27">        dataSource.setDriverClassName(&quot;org.h2.Driver&quot;);</span>
+<span class="nc" id="L28">        dataSource.setUrl(&quot;jdbc:h2:mem:pos_testdb;DB_CLOSE_DELAY=-1&quot;);</span>
+<span class="nc" id="L29">        dataSource.setUsername(&quot;sa&quot;);</span>
+<span class="nc" id="L30">        dataSource.setPassword(&quot;&quot;);</span>
+<span class="nc" id="L31">        return dataSource;</span>
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+<span class="nc" id="L36">        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();</span>
+<span class="nc" id="L37">        em.setDataSource(dataSource());</span>
+<span class="nc" id="L38">        em.setPackagesToScan(new String[] { &quot;com.increff.pos.entity&quot;, &quot;com.increff.pos.pojo&quot; });</span>
+<span class="nc" id="L39">        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());</span>
+<span class="nc" id="L40">        Properties properties = new Properties();</span>
+<span class="nc" id="L41">        properties.put(&quot;hibernate.hbm2ddl.auto&quot;, &quot;create&quot;);</span>
+<span class="nc" id="L42">        properties.put(&quot;hibernate.dialect&quot;, &quot;org.hibernate.dialect.H2Dialect&quot;);</span>
+<span class="nc" id="L43">        em.setJpaProperties(properties);</span>
+
+<span class="nc" id="L45">        return em;</span>
+    }
+
+    @Bean
+    public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
+<span class="nc" id="L50">        JpaTransactionManager transactionManager = new JpaTransactionManager();</span>
+<span class="nc" id="L51">        transactionManager.setEntityManagerFactory(emf);</span>
+<span class="nc" id="L52">        return transactionManager;</span>
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+<span class="nc" id="L57">        return new BCryptPasswordEncoder();</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

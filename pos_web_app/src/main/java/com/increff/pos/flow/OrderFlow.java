@@ -5,12 +5,14 @@ import com.increff.pos.commons.ApiException;
 import com.increff.pos.entity.Inventory;
 import com.increff.pos.entity.OrderItem;
 import com.increff.pos.entity.Orders;
+import com.increff.pos.entity.Product;
 import com.increff.pos.model.data.InvoiceData;
 import com.increff.pos.model.data.InvoiceRequest;
 import com.increff.pos.model.data.OrderData;
 import com.increff.pos.service.InventoryApi;
 import com.increff.pos.service.OrderApi;
 import com.increff.pos.service.OrderItemApi;
+import com.increff.pos.service.ProductApi;
 import com.increff.pos.util.AbstractMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
@@ -23,6 +25,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -38,21 +41,31 @@ public class OrderFlow {
     InventoryApi inventoryApi;
 
     @Autowired
+    ProductApi productApi;
+
+    @Autowired
     ObjectMapper objectMapper;
 
     @Autowired
     AbstractMapper mapper;
 
 
+
     public InvoiceData finalizeOrder(Integer orderId) throws ApiException {
         Orders order = orderApi.getById(orderId);
         OrderData orderData = mapper.convert(order, OrderData.class);
         List<OrderItem> items = orderItemApi.getAllByOrderId(orderId);
-        System.out.println(items);
+
+        List<String> productNames = new ArrayList<>();
+        for(OrderItem orderItem : items) {
+            Product product = productApi.findById(orderItem.getProductId());
+            productNames.add(product.getName());
+        }
 
         InvoiceRequest requestPayload = new InvoiceRequest();
         requestPayload.setOrderData(orderData);
         requestPayload.setOrderItems(items);
+        requestPayload.setProductNames(productNames);
 
         String jsonPayload;
         try {

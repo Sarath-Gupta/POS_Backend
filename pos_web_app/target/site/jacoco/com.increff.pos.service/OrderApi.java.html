@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-webapp</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.service</a> &gt; <span class="el_source">OrderApi.java</span></div><h1>OrderApi.java</h1><pre class="source lang-java linenums">package com.increff.pos.service;
+
+import com.increff.pos.commons.ApiException;
+import com.increff.pos.dao.OrdersDao;
+import com.increff.pos.entity.Orders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+<span class="fc" id="L13">public class OrderApi extends AbstractApi&lt;Orders&gt;{</span>
+
+    @Autowired
+    OrdersDao ordersDao;
+
+    @Transactional
+    public void add(Orders order) {
+<span class="fc" id="L20">        ordersDao.add(order);</span>
+<span class="fc" id="L21">    }</span>
+
+    public Page&lt;Orders&gt; getAll(Pageable pageable) {
+<span class="fc" id="L24">        return ordersDao.findAll(pageable);</span>
+    }
+
+    public Orders getById(Integer id) throws ApiException {
+<span class="fc" id="L28">        Orders order = ordersDao.findById(id);</span>
+<span class="fc" id="L29">        ifNotExists(order);</span>
+<span class="fc" id="L30">        return order;</span>
+    }
+
+    public void updateStatusToInvoiced(Integer orderId) {
+<span class="fc" id="L34">        ordersDao.updateStatusToInvoiced(orderId);</span>
+<span class="fc" id="L35">    }</span>
+
+    public void cancelOrder(Integer orderId) {
+<span class="fc" id="L38">        ordersDao.cancelOrder(orderId);</span>
+<span class="fc" id="L39">    }</span>
+
+    public void update(Orders order) {
+<span class="fc" id="L42">        ordersDao.update(order);</span>
+<span class="fc" id="L43">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

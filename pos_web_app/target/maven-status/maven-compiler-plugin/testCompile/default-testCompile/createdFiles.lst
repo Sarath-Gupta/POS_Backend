@@ -1,0 +1,10 @@
+com/increff/pos/unit/OrderItemApiTest.class
+com/increff/pos/factory/OrderItemFactory.class
+com/increff/pos/factory/ClientFactory.class
+com/increff/pos/factory/ProductFactory.class
+com/increff/pos/factory/OrderFactory.class
+com/increff/pos/unit/OrderApiTest.class
+com/increff/pos/unit/InventoryApiTest.class
+com/increff/pos/unit/ProductApiTest.class
+com/increff/pos/factory/InventoryFactory.class
+com/increff/pos/unit/ClientApiTest.class

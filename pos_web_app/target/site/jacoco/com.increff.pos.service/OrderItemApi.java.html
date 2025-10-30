@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderItemApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-webapp</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.service</a> &gt; <span class="el_source">OrderItemApi.java</span></div><h1>OrderItemApi.java</h1><pre class="source lang-java linenums">package com.increff.pos.service;
+
+import com.increff.pos.commons.ApiException;
+import com.increff.pos.dao.OrderItemDao;
+import com.increff.pos.entity.OrderItem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+<span class="fc" id="L15">public class OrderItemApi extends AbstractApi&lt;OrderItem&gt;{</span>
+
+    @Autowired
+    OrderItemDao orderItemDao;
+
+    @Transactional
+    public void add(OrderItem orderItem) {
+<span class="fc" id="L22">        orderItemDao.add(orderItem);</span>
+<span class="fc" id="L23">    }</span>
+
+    public Page&lt;OrderItem&gt; getAll(Pageable pageable) {
+<span class="fc" id="L26">        return orderItemDao.findAll(pageable);</span>
+    }
+
+    public OrderItem getById(Integer id) throws ApiException {
+<span class="fc" id="L30">        OrderItem orderItemPojo = orderItemDao.findById(id);</span>
+<span class="fc" id="L31">        ifNotExists(orderItemPojo);</span>
+<span class="fc" id="L32">        return orderItemPojo;</span>
+    }
+
+    @Transactional
+    public OrderItem update(Integer id, OrderItem orderItem) throws ApiException {
+<span class="fc" id="L37">        OrderItem orderItemExisting = orderItemDao.findById(id);</span>
+<span class="fc" id="L38">        ifNotExists(orderItemExisting);</span>
+<span class="fc" id="L39">        orderItemExisting.setQuantity(orderItem.getQuantity());</span>
+<span class="fc" id="L40">        orderItemExisting.setSellingPrice(orderItem.getSellingPrice());</span>
+<span class="fc" id="L41">        return orderItemExisting;</span>
+    }
+
+    @Transactional
+    public List&lt;OrderItem&gt; getAllByOrderId(Integer id) {
+<span class="fc" id="L46">        List&lt;OrderItem&gt; listItems = orderItemDao.getByOrderId(id);</span>
+<span class="fc" id="L47">        return listItems;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

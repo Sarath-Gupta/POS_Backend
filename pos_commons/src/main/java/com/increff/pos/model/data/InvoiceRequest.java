@@ -12,4 +12,5 @@ import java.util.List;
 public class InvoiceRequest {
     private OrderData orderData;
     private List<OrderItem> orderItems;
+    private List<String> productNames;
 }

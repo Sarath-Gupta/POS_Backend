@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-webapp</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.dto</a> &gt; <span class="el_source">ProductDto.java</span></div><h1>ProductDto.java</h1><pre class="source lang-java linenums">package com.increff.pos.dto;
+
+import com.increff.pos.model.form.TsvRowResultProduct;
+import com.increff.pos.service.ProductApi;
+import com.increff.pos.flow.ProductFlow;
+import com.increff.pos.commons.ApiException;
+import com.increff.pos.model.data.ProductData;
+import com.increff.pos.model.form.ProductForm;
+import com.increff.pos.entity.Product;
+import com.increff.pos.model.form.ProductUpdateForm;
+import com.increff.pos.util.AbstractMapper;
+import com.increff.pos.util.NormalizeUtil;
+import com.increff.pos.util.ProductUtil;
+import com.increff.pos.util.ValidationUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+<span class="nc" id="L26">public class ProductDto {</span>
+
+    @Autowired
+    ProductApi productApi;
+
+    @Autowired
+    ProductFlow productFlow;
+
+    @Autowired
+    AbstractMapper mapper;
+
+    @Autowired
+    private ValidationUtil validationUtil;
+
+    public ProductData add(ProductForm productForm) throws ApiException {
+<span class="nc" id="L41">        NormalizeUtil.normalize(productForm);</span>
+<span class="nc" id="L42">        validationUtil.validate(productForm);</span>
+<span class="nc" id="L43">        Product pojo = mapper.convert(productForm, Product.class);</span>
+<span class="nc" id="L44">        productFlow.add(pojo);</span>
+<span class="nc" id="L45">        return mapper.convert(pojo, ProductData.class);</span>
+    }
+
+    public String processTsvWithRemarks(MultipartFile file) throws ApiException {
+<span class="nc" id="L49">        List&lt;ProductForm&gt; productForms = ProductUtil.parseTSV(file);</span>
+<span class="nc" id="L50">        List&lt;TsvRowResultProduct&gt; results = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L51">        boolean allValid = true;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        for (ProductForm productForm : productForms) {</span>
+<span class="nc" id="L53">            TsvRowResultProduct result = new TsvRowResultProduct(productForm);</span>
+            try {
+<span class="nc" id="L55">                NormalizeUtil.normalize(productForm);</span>
+<span class="nc" id="L56">                validationUtil.validate(productForm);</span>
+<span class="nc" id="L57">                Product product = mapper.convert(productForm, Product.class);</span>
+<span class="nc" id="L58">                productApi.add(product);</span>
+<span class="nc" id="L59">            } catch (ApiException e) {</span>
+<span class="nc" id="L60">                result.setRemarks(e.getMessage());</span>
+<span class="nc" id="L61">                allValid = false;</span>
+<span class="nc" id="L62">            }</span>
+<span class="nc" id="L63">            results.add(result);</span>
+<span class="nc" id="L64">        }</span>
+
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (allValid) {</span>
+<span class="nc" id="L67">            List&lt;Product&gt; productPojos = results.stream()</span>
+<span class="nc" id="L68">                    .map(r -&gt; mapper.convert(r.form, Product.class))</span>
+<span class="nc" id="L69">                    .collect(Collectors.toList());</span>
+            try {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                for (Product productPojo : productPojos) {</span>
+<span class="nc" id="L72">                    productApi.add(productPojo);</span>
+<span class="nc" id="L73">                }</span>
+<span class="nc" id="L74">            } catch (ApiException e) {</span>
+<span class="nc" id="L75">                throw new ApiException(&quot;Critical Database/Service Error during insertion: &quot; + e.getMessage());</span>
+<span class="nc" id="L76">            }</span>
+        }
+<span class="nc" id="L78">        return convertResultsToTsvString(results);</span>
+    }
+
+    private String convertResultsToTsvString(List&lt;TsvRowResultProduct&gt; results) {
+<span class="nc" id="L82">        StringBuilder tsvContent = new StringBuilder();</span>
+<span class="nc" id="L83">        tsvContent.append(&quot;barcode\tclientId\tname\tmrp\tRemarks\n&quot;);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        for (TsvRowResultProduct result : results) {</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            String outputRemarks = result.isValid() ? &quot;&quot; : result.remarks;</span>
+<span class="nc" id="L86">            tsvContent.append(result.form.getBarcode()).append(&quot;\t&quot;)</span>
+<span class="nc" id="L87">                    .append(result.form.getClientId()).append(&quot;\t&quot;)</span>
+<span class="nc" id="L88">                    .append(result.form.getName()).append(&quot;\t&quot;)</span>
+<span class="nc" id="L89">                    .append(result.form.getMrp()).append(&quot;\t&quot;)</span>
+<span class="nc" id="L90">                    .append(outputRemarks).append(&quot;\n&quot;);</span>
+<span class="nc" id="L91">        }</span>
+<span class="nc" id="L92">        return tsvContent.toString();</span>
+    }
+
+
+    public ProductData findById(Integer id) throws ApiException {
+<span class="nc" id="L97">        Product productPojo = productApi.findById(id);</span>
+<span class="nc" id="L98">        return mapper.convert(productPojo, ProductData.class);</span>
+    }
+
+    public Page&lt;ProductData&gt; getAll(Pageable pageable) {
+<span class="nc" id="L102">        Page&lt;Product&gt; productPage = productApi.getAll(pageable);</span>
+<span class="nc" id="L103">        return productPage.map(product -&gt; mapper.convert(product, ProductData.class));</span>
+    }
+
+    public ProductData update(Integer id, ProductUpdateForm productForm) throws ApiException {
+<span class="nc" id="L107">        NormalizeUtil.normalize(productForm);</span>
+<span class="nc" id="L108">        validationUtil.validate(productForm);</span>
+<span class="nc" id="L109">        Product pojo = mapper.convert(productForm, Product.class);</span>
+<span class="nc" id="L110">        Product updatedPojo = productApi.update(id,pojo);</span>
+<span class="nc" id="L111">        return mapper.convert(updatedPojo, ProductData.class);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

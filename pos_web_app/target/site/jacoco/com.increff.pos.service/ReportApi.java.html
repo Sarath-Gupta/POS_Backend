@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReportApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-webapp</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.service</a> &gt; <span class="el_source">ReportApi.java</span></div><h1>ReportApi.java</h1><pre class="source lang-java linenums">package com.increff.pos.service;
+
+import com.increff.pos.dao.ReportDao;
+import com.increff.pos.model.data.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import javax.persistence.Tuple;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+
+@Service
+<span class="nc" id="L15">public class ReportApi {</span>
+
+    @Autowired
+    private ReportDao reportDao;
+
+    @Transactional(readOnly = true)
+    public DashboardSummaryData generateDashboardSummary() {
+<span class="nc" id="L22">        DashboardSummaryData data = new DashboardSummaryData();</span>
+<span class="nc" id="L23">        List&lt;Tuple&gt; salesResults = reportDao.getSalesMetrics();</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (!salesResults.isEmpty()) {</span>
+<span class="nc" id="L25">            Tuple salesRow = salesResults.get(0);</span>
+<span class="nc" id="L26">            Double totalRevenue = salesRow.get(&quot;totalRevenue&quot;, Double.class);</span>
+<span class="nc" id="L27">            Long totalOrders = salesRow.get(&quot;totalOrders&quot;, Long.class);</span>
+            
+<span class="nc" id="L29">            data.setTotalRevenue(totalRevenue);</span>
+<span class="nc" id="L30">            data.setTotalOrders(totalOrders);</span>
+
+<span class="nc bnc" id="L32" title="All 6 branches missed.">            if (totalOrders != null &amp;&amp; totalOrders &gt; 0 &amp;&amp; totalRevenue != null) {</span>
+<span class="nc" id="L33">                data.setAverageOrderValue(totalRevenue / totalOrders);</span>
+            } else {
+<span class="nc" id="L35">                data.setAverageOrderValue(0.0);</span>
+            }
+<span class="nc" id="L37">        } else {</span>
+<span class="nc" id="L38">            data.setTotalRevenue(0.0);</span>
+<span class="nc" id="L39">            data.setTotalOrders(0L);</span>
+<span class="nc" id="L40">            data.setAverageOrderValue(0.0);</span>
+        }
+
+<span class="nc" id="L43">        List&lt;Tuple&gt; inventoryResults = reportDao.getInventoryMetrics();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (!inventoryResults.isEmpty()) {</span>
+<span class="nc" id="L45">            Tuple inventoryRow = inventoryResults.get(0);</span>
+<span class="nc" id="L46">            data.setTotalProducts(inventoryRow.get(&quot;totalProducts&quot;, Long.class));</span>
+<span class="nc" id="L47">            data.setTotalClients(inventoryRow.get(&quot;totalClients&quot;, Long.class));</span>
+<span class="nc" id="L48">            data.setLowStockItems(inventoryRow.get(&quot;lowStockItems&quot;, Long.class));</span>
+<span class="nc" id="L49">            data.setInventoryValue(inventoryRow.get(&quot;inventoryValue&quot;, Double.class));</span>
+<span class="nc" id="L50">        } else {</span>
+<span class="nc" id="L51">            data.setTotalProducts(0L);</span>
+<span class="nc" id="L52">            data.setTotalClients(0L);</span>
+<span class="nc" id="L53">            data.setLowStockItems(0L);</span>
+<span class="nc" id="L54">            data.setInventoryValue(0.0);</span>
+        }
+        
+<span class="nc" id="L57">        return data;</span>
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;TopSellingProductData&gt; generateTopSellingProducts(Integer limit) {
+<span class="nc" id="L62">        List&lt;Tuple&gt; results = reportDao.getTopSellingProducts(limit);</span>
+<span class="nc" id="L63">        List&lt;TopSellingProductData&gt; reportDataList = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        for (Tuple row : results) {</span>
+<span class="nc" id="L66">            TopSellingProductData data = new TopSellingProductData();</span>
+<span class="nc" id="L67">            data.setProductName(row.get(&quot;productName&quot;, String.class));</span>
+<span class="nc" id="L68">            data.setBarcode(row.get(&quot;barcode&quot;, String.class));</span>
+<span class="nc" id="L69">            data.setClientName(row.get(&quot;clientName&quot;, String.class));</span>
+<span class="nc" id="L70">            data.setTotalQuantitySold(row.get(&quot;totalQuantitySold&quot;, Long.class));</span>
+<span class="nc" id="L71">            data.setTotalRevenue(row.get(&quot;totalRevenue&quot;, Double.class));</span>
+<span class="nc" id="L72">            data.setCurrentStock(row.get(&quot;currentStock&quot;, Integer.class));</span>
+<span class="nc" id="L73">            reportDataList.add(data);</span>
+<span class="nc" id="L74">        }</span>
+<span class="nc" id="L75">        return reportDataList;</span>
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;RevenueTrendData&gt; generateRevenueTrend(String period) {
+<span class="nc" id="L80">        List&lt;Tuple&gt; results = reportDao.getRevenueTrend(period);</span>
+<span class="nc" id="L81">        List&lt;RevenueTrendData&gt; reportDataList = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        for (Tuple row : results) {</span>
+<span class="nc" id="L84">            RevenueTrendData data = new RevenueTrendData();</span>
+
+<span class="nc" id="L86">            LocalDate createdAt = row.get(&quot;period&quot;, java.sql.Date.class).toLocalDate();</span>
+            String formattedPeriod;
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            if (&quot;monthly&quot;.equals(period)) {</span>
+<span class="nc" id="L89">                formattedPeriod = createdAt.getYear() + &quot;-&quot; + String.format(&quot;%02d&quot;, createdAt.getMonthValue());</span>
+            } else {
+<span class="nc" id="L91">                formattedPeriod = createdAt.toString();</span>
+            }
+            
+<span class="nc" id="L94">            data.setPeriod(formattedPeriod);</span>
+<span class="nc" id="L95">            data.setRevenue(row.get(&quot;revenue&quot;, Double.class));</span>
+<span class="nc" id="L96">            data.setOrderCount(row.get(&quot;orderCount&quot;, Long.class));</span>
+<span class="nc" id="L97">            data.setItemsSold(row.get(&quot;itemsSold&quot;, Long.class));</span>
+<span class="nc" id="L98">            reportDataList.add(data);</span>
+<span class="nc" id="L99">        }</span>
+<span class="nc" id="L100">        return reportDataList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
