@@ -5,9 +5,9 @@ import com.increff.pos.flow.InvoiceFlow;
 import com.increff.pos.model.data.InvoiceData;
 import com.increff.pos.model.data.InvoiceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class InvoiceDto {
 
     @Autowired

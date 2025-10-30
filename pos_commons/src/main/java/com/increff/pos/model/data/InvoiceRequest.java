@@ -10,6 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class InvoiceRequest {
-    private Orders order;
+    private OrderData orderData;
     private List<OrderItem> orderItems;
 }

@@ -9,9 +9,8 @@ import javax.validation.constraints.Positive;
 @Getter
 @Setter
 public class OrderItemForm {
-    @NotNull(message = "Product ID cannot be empty")
-    @Positive(message = "Product ID must be positive")
-    private Integer productId;
+    @NotNull(message = "Barcode cannot be empty")
+    private String barcode;
 
     @NotNull(message = "Quantity cannot be empty")
     @Max(value = 250, message = "Quantity cannot exceed 250")

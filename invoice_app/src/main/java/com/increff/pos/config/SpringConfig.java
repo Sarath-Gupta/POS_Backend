@@ -19,27 +19,12 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 @Configuration
 @EnableWebMvc
 
-@ComponentScan(
-        basePackages = "com.increff.pos.controller",
-        useDefaultFilters = false,
-        includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)
-)
+@ComponentScan(basePackages = "com.increff.pos")
 public class SpringConfig implements WebMvcConfigurer {
 
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        mapper.registerModule(new JavaTimeModule());
-
-        // 2. Disable writing dates as timestamps (optional, but highly recommended)
-        mapper.configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return mapper;
     }
 
     @Bean
@@ -57,7 +42,6 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // These are for serving Swagger UI
         registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
@@ -66,7 +50,6 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // Redirect helper so Swagger UI loads with the correct docs URL under context path
         registry.addRedirectViewController("/swagger", "/swagger-ui.html?url=/pos/v2/api-docs");
     }
 }

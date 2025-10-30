@@ -1,12 +1,12 @@
 package com.increff.pos.model.form;
 
 
-public class TsvRowResult {
+public class TsvRowResultClient {
     public ClientForm form;
     public String remarks;
     public boolean isValid;
 
-    public TsvRowResult(ClientForm form) {
+    public TsvRowResultClient(ClientForm form) {
         this.form = form;
         this.remarks = ""; // Blank for valid rows
         this.isValid = true;
