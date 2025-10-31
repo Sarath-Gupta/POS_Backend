@@ -14,30 +14,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.http.HttpServletResponse;
 
-import static org.springframework.transaction.TransactionDefinition.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-<span class="nc" id="L22">public class SecurityConfig extends WebSecurityConfigurerAdapter {</span>
+<span class="nc" id="L20">public class SecurityConfig extends WebSecurityConfigurerAdapter {</span>
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-<span class="nc" id="L29">        return new BCryptPasswordEncoder();</span>
+<span class="nc" id="L27">        return new BCryptPasswordEncoder();</span>
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-<span class="nc" id="L34">        http</span>
-<span class="nc" id="L35">                .cors().and()</span>
-<span class="nc" id="L36">                .csrf().disable()</span>
-<span class="nc" id="L37">                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)</span>
-<span class="nc" id="L38">                .and()</span>
-<span class="nc" id="L39">                .authorizeRequests()</span>
-<span class="nc" id="L40">                .antMatchers(</span>
+<span class="nc" id="L32">        http</span>
+<span class="nc" id="L33">                .cors().and()</span>
+<span class="nc" id="L34">                .csrf().disable()</span>
+<span class="nc" id="L35">                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)</span>
+<span class="nc" id="L36">                .and()</span>
+<span class="nc" id="L37">                .authorizeRequests()</span>
+<span class="nc" id="L38">                .antMatchers(</span>
                         &quot;/v2/api-docs&quot;,
                         &quot;/v2/api-docs/**&quot;,
                         &quot;/swagger-resources&quot;,
@@ -48,23 +46,23 @@ import static org.springframework.transaction.TransactionDefinition.withDefaults
                         &quot;/configuration/security&quot;,
                         &quot;/v3/api-docs/**&quot;,
                         &quot;/swagger-ui/**&quot;
-<span class="nc" id="L51">                ).permitAll()</span>
-<span class="nc" id="L52">                .antMatchers(&quot;/users/login&quot;, &quot;/users/signup&quot;).permitAll()</span>
-<span class="nc" id="L53">                .antMatchers(&quot;/inventory/update/**&quot;,&quot;/reports/**&quot;).hasRole(&quot;SUPERVISOR&quot;)</span>
-<span class="nc" id="L54">                .anyRequest().authenticated()</span>
-<span class="nc" id="L55">                .and()</span>
-<span class="nc" id="L56">                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)</span>
-<span class="nc" id="L57">                .exceptionHandling()</span>
-<span class="nc" id="L58">                .authenticationEntryPoint((request, response, authException) -&gt; {</span>
-<span class="nc" id="L59">                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span>
-<span class="nc" id="L60">                    response.setContentType(&quot;application/json&quot;);</span>
-<span class="nc" id="L61">                    response.getWriter().write(&quot;{\&quot;error\&quot;:\&quot;Unauthorized\&quot;,\&quot;message\&quot;:\&quot;Authentication required\&quot;}&quot;);</span>
-<span class="nc" id="L62">                })</span>
-<span class="nc" id="L63">                .accessDeniedHandler((request, response, accessDeniedException) -&gt; {</span>
-<span class="nc" id="L64">                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);</span>
-<span class="nc" id="L65">                    response.setContentType(&quot;application/json&quot;);</span>
-<span class="nc" id="L66">                    response.getWriter().write(&quot;{\&quot;error\&quot;:\&quot;Forbidden\&quot;,\&quot;message\&quot;:\&quot;Access denied\&quot;}&quot;);</span>
-<span class="nc" id="L67">                });</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L49">                ).permitAll()</span>
+<span class="nc" id="L50">                .antMatchers(&quot;/users/login&quot;, &quot;/users/signup&quot;).permitAll()</span>
+<span class="nc" id="L51">                .antMatchers(&quot;/inventory/update/**&quot;,&quot;/reports/**&quot;).hasRole(&quot;SUPERVISOR&quot;)</span>
+<span class="nc" id="L52">                .anyRequest().authenticated()</span>
+<span class="nc" id="L53">                .and()</span>
+<span class="nc" id="L54">                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)</span>
+<span class="nc" id="L55">                .exceptionHandling()</span>
+<span class="nc" id="L56">                .authenticationEntryPoint((request, response, authException) -&gt; {</span>
+<span class="nc" id="L57">                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span>
+<span class="nc" id="L58">                    response.setContentType(&quot;application/json&quot;);</span>
+<span class="nc" id="L59">                    response.getWriter().write(&quot;{\&quot;error\&quot;:\&quot;Unauthorized\&quot;,\&quot;message\&quot;:\&quot;Authentication required\&quot;}&quot;);</span>
+<span class="nc" id="L60">                })</span>
+<span class="nc" id="L61">                .accessDeniedHandler((request, response, accessDeniedException) -&gt; {</span>
+<span class="nc" id="L62">                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);</span>
+<span class="nc" id="L63">                    response.setContentType(&quot;application/json&quot;);</span>
+<span class="nc" id="L64">                    response.getWriter().write(&quot;{\&quot;error\&quot;:\&quot;Forbidden\&quot;,\&quot;message\&quot;:\&quot;Access denied\&quot;}&quot;);</span>
+<span class="nc" id="L65">                });</span>
+<span class="nc" id="L66">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

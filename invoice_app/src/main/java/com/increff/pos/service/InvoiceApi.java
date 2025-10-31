@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.awt.Color;
-import java.time.format.DateTimeFormatter; // Import the formatter
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
 
@@ -29,12 +29,10 @@ public class InvoiceApi {
 
     private static final float MARGIN = 50;
 
-    // Define reusable colors for the new design
-    private static final Color COLOR_PRIMARY = new Color(34, 66, 124); // A professional dark blue
+    private static final Color COLOR_PRIMARY = new Color(34, 66, 124);
     private static final Color COLOR_WHITE = Color.WHITE;
     private static final Color COLOR_BLACK = Color.BLACK;
 
-    // --- NEW: Define the date formatter ---
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public InvoiceData generateInvoice(InvoiceRequest invoiceRequest) throws ApiException {
@@ -55,7 +53,6 @@ public class InvoiceApi {
 
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
 
-                // --- Header Block ---
                 float headerBlockHeight = 50;
 
                 contentStream.setNonStrokingColor(COLOR_PRIMARY);
@@ -66,8 +63,6 @@ public class InvoiceApi {
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
 
-                // --- CHANGED: Lowered the "INVOICE" text ---
-                // Adjusted +18 to +10 to move it down
                 contentStream.newLineAtOffset(MARGIN + 20, yPosition - (headerBlockHeight / 2) + 10);
                 contentStream.showText("INVOICE");
                 contentStream.endText();
@@ -75,38 +70,30 @@ public class InvoiceApi {
                 contentStream.setNonStrokingColor(COLOR_BLACK);
                 yPosition -= (headerBlockHeight + 40);
 
-                // --- CHANGED: Order Details (Split into two lines) ---
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA, 12);
                 contentStream.newLineAtOffset(MARGIN, yPosition);
 
-                // Line 1: Order ID
                 contentStream.showText("Order ID: " + order.getId());
 
-                // Move to the next line (18 points down)
                 contentStream.newLineAtOffset(0, -18);
 
-                // Line 2: Formatted Date
                 String createdAtStr = "N/A";
                 if (order.getCreatedAt() != null) {
-                    // Use the formatter, assuming getCreatedAt() is LocalDateTime or ZonedDateTime
                     createdAtStr = order.getCreatedAt().toLocalDate().format(DATE_FORMATTER);
                 }
                 contentStream.showText("Date: " + createdAtStr);
 
                 contentStream.endText();
 
-                // Adjust Y position for the two lines + padding
-                yPosition -= 58; // Was 40, now 40 + 18
+                yPosition -= 58;
 
-                // --- Table ---
                 Table.TableBuilder tableBuilder = Table.builder()
                         .addColumnsOfWidth(pageWidth * 0.4f, pageWidth * 0.2f, pageWidth * 0.2f, pageWidth * 0.2f)
                         .font(PDType1Font.HELVETICA)
                         .fontSize(10)
                         .padding(8);
 
-                // Table Header (White text on blue background)
                 tableBuilder.addRow(Row.builder()
                         .add(TextCell.builder().text("Product Name").font(PDType1Font.HELVETICA_BOLD).backgroundColor(COLOR_PRIMARY).textColor(COLOR_WHITE).borderWidth(0).build())
                         .add(TextCell.builder().text("Quantity").font(PDType1Font.HELVETICA_BOLD).backgroundColor(COLOR_PRIMARY).textColor(COLOR_WHITE).horizontalAlignment(HorizontalAlignment.RIGHT).borderWidth(0).build())
@@ -114,7 +101,6 @@ public class InvoiceApi {
                         .add(TextCell.builder().text("Subtotal").font(PDType1Font.HELVETICA_BOLD).backgroundColor(COLOR_PRIMARY).textColor(COLOR_WHITE).horizontalAlignment(HorizontalAlignment.RIGHT).borderWidth(0).build())
                         .build());
 
-                // Table Body (No borders)
                 for (int i = 0; i < items.size(); i++) {
                     OrderItem item = items.get(i);
                     String productName = productNames.get(i);
@@ -143,7 +129,6 @@ public class InvoiceApi {
                 yPosition -= table.getHeight();
                 yPosition -= 30;
 
-                // Grand Total (Moved Left)
                 contentStream.setNonStrokingColor(COLOR_BLACK);
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
                 contentStream.beginText();

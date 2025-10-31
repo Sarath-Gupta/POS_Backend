@@ -10,15 +10,18 @@ com/increff/pos/config/WebInitializer.class
 com/increff/pos/controller/InventoryController.class
 com/increff/pos/controller/ControllerAdvice.class
 com/increff/pos/dto/InventoryDto.class
+com/increff/pos/dto/DashboardDto.class
 com/increff/pos/dao/OrderItemDao.class
 com/increff/pos/controller/OrderItemController.class
 com/increff/pos/dto/OrdersDto.class
 com/increff/pos/dao/OrdersDao.class
 com/increff/pos/dao/InventoryDao.class
+com/increff/pos/dao/DashboardDao.class
 com/increff/pos/service/OrderApi.class
 com/increff/pos/service/ClientApi.class
 com/increff/pos/controller/UserController.class
 com/increff/pos/config/DbConfig.class
+com/increff/pos/service/DashboardApi.class
 com/increff/pos/dto/UserDto.class
 com/increff/pos/flow/ProductFlow.class
 com/increff/pos/controller/ProductController.class
@@ -40,7 +43,7 @@ com/increff/pos/util/ProductUtil.class
 com/increff/pos/controller/ClientController.class
 com/increff/pos/dao/AbstractDao.class
 com/increff/pos/dao/ClientDao.class
-com/increff/pos/config/TestConfig.class
+com/increff/pos/controller/DashboardController.class
 com/increff/pos/service/UserApi.class
 com/increff/pos/flow/OrderItemFlow.class
 com/increff/pos/dto/OrderItemDto.class
