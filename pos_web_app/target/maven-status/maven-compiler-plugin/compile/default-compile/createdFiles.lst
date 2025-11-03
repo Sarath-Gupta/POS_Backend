@@ -1,7 +1,6 @@
 com/increff/pos/config/ApplicationProperties.class
 com/increff/pos/service/JwtService.class
 com/increff/pos/config/SecurityConfig.class
-com/increff/pos/config/SecurityWebApplicationInitializer.class
 com/increff/pos/service/OrderItemApi.class
 com/increff/pos/dto/ReportDto.class
 com/increff/pos/service/ProductApi.class
@@ -39,6 +38,7 @@ com/increff/pos/dao/ProductDao.class
 com/increff/pos/service/InventoryApi.class
 com/increff/pos/dao/UserDao.class
 com/increff/pos/service/ReportApi.class
+com/increff/pos/config/TestDbConfig.class
 com/increff/pos/util/ProductUtil.class
 com/increff/pos/controller/ClientController.class
 com/increff/pos/dao/AbstractDao.class

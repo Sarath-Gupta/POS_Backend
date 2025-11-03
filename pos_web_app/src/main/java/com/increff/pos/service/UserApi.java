@@ -1,6 +1,5 @@
 package com.increff.pos.service;
 
-import com.increff.pos.commons.ApiException;
 import com.increff.pos.dao.UserDao;
 import com.increff.pos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,8 @@ public class UserApi {
 
     @Transactional
     public void add(User user) {
-        if(this.supervisorEmails.contains(user.getEmail())) {
+        String emailToCheck = user.getEmail().toLowerCase();
+        if(this.supervisorEmails.contains(emailToCheck)) {
             user.setRole("SUPERVISOR");
         }
         else {
@@ -47,7 +47,4 @@ public class UserApi {
         return userDao.findByEmail(email);
     }
 
-    public User login(User user) throws ApiException {
-        return userDao.login(user.getEmail(), user.getPassword());
-    }
 }

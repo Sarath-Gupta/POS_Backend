@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-<span class="nc" id="L20">public class OrderItemFlow {</span>
+<span class="fc" id="L20">public class OrderItemFlow {</span>
 
     @Autowired
     ProductApi productApi;
@@ -33,50 +33,50 @@ import java.util.List;
 
     @Transactional
     public void add(List&lt;OrderItem&gt; list) throws ApiException {
-<span class="nc bnc" id="L36" title="All 2 branches missed.">        for(OrderItem orderItem : list) {</span>
-<span class="nc" id="L37">            Integer productId = orderItem.getProductId();</span>
-<span class="nc" id="L38">            validateProduct(orderItem, productId);</span>
-<span class="nc" id="L39">            inventoryApi.checkStock(productId, orderItem.getQuantity());</span>
-<span class="nc" id="L40">        }</span>
-<span class="nc" id="L41">        Orders order = new Orders();</span>
-<span class="nc" id="L42">        order.setTotal_amount(0.0);</span>
-<span class="nc" id="L43">        orderApi.add(order);</span>
-<span class="nc" id="L44">        Integer generatedOrderId = order.getId();</span>
-<span class="nc" id="L45">        Orders orderGenerated = orderApi.getById(generatedOrderId);</span>
-<span class="nc" id="L46">        Double grandTotal = 0.0;</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        for(OrderItem orderItem : list) {</span>
-<span class="nc" id="L48">            Integer productId = orderItem.getProductId();</span>
-<span class="nc" id="L49">            Integer quantityOrdered = orderItem.getQuantity();</span>
-<span class="nc" id="L50">            orderItem.setOrderId(generatedOrderId);</span>
-<span class="nc" id="L51">            orderItemApi.add(orderItem);</span>
-<span class="nc" id="L52">            grandTotal += (quantityOrdered * orderItem.getSellingPrice());</span>
-<span class="nc" id="L53">            inventoryApi.reduceStock(productId, quantityOrdered);</span>
-<span class="nc" id="L54">        }</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        for(OrderItem orderItem : list) {</span>
+<span class="fc" id="L37">            Integer productId = orderItem.getProductId();</span>
+<span class="fc" id="L38">            validateProduct(orderItem, productId);</span>
+<span class="fc" id="L39">            inventoryApi.checkStock(productId, orderItem.getQuantity());</span>
+<span class="fc" id="L40">        }</span>
+<span class="fc" id="L41">        Orders order = new Orders();</span>
+<span class="fc" id="L42">        order.setTotal_amount(0.0);</span>
+<span class="fc" id="L43">        orderApi.add(order);</span>
+<span class="fc" id="L44">        Integer generatedOrderId = order.getId();</span>
+<span class="fc" id="L45">        Orders orderGenerated = orderApi.getById(generatedOrderId);</span>
+<span class="fc" id="L46">        Double grandTotal = 0.0;</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        for(OrderItem orderItem : list) {</span>
+<span class="fc" id="L48">            Integer productId = orderItem.getProductId();</span>
+<span class="fc" id="L49">            Integer quantityOrdered = orderItem.getQuantity();</span>
+<span class="fc" id="L50">            orderItem.setOrderId(generatedOrderId);</span>
+<span class="fc" id="L51">            orderItemApi.add(orderItem);</span>
+<span class="fc" id="L52">            grandTotal += (quantityOrdered * orderItem.getSellingPrice());</span>
+<span class="fc" id="L53">            inventoryApi.reduceStock(productId, quantityOrdered);</span>
+<span class="fc" id="L54">        }</span>
 
-<span class="nc" id="L56">        orderGenerated.setTotal_amount(grandTotal);</span>
-<span class="nc" id="L57">        orderApi.update(orderGenerated);</span>
-<span class="nc" id="L58">    }</span>
+<span class="fc" id="L56">        orderGenerated.setTotal_amount(grandTotal);</span>
+<span class="fc" id="L57">        orderApi.update(orderGenerated);</span>
+<span class="fc" id="L58">    }</span>
 
     private void validateProduct(OrderItem orderItem, Integer productId) throws ApiException{
-<span class="nc" id="L61">        Product product = productApi.findById(productId);</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if(orderItem.getSellingPrice() &gt; product.getMrp()) {</span>
-<span class="nc" id="L63">            throw new ApiException(&quot;Selling Price cannot be greater than MRP&quot;);</span>
+<span class="fc" id="L61">        Product product = productApi.findById(productId);</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if(orderItem.getSellingPrice() &gt; product.getMrp()) {</span>
+<span class="fc" id="L63">            throw new ApiException(&quot;Selling Price cannot be greater than MRP&quot;);</span>
         }
-<span class="nc" id="L65">    }</span>
+<span class="fc" id="L65">    }</span>
 
     public List&lt;OrderItem&gt; convert(List&lt;OrderItemForm&gt; listForm) throws ApiException{
-<span class="nc" id="L68">        List&lt;OrderItem&gt; listPojo = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        for(OrderItemForm orderItemForm : listForm) {</span>
-<span class="nc" id="L70">            Product product = productApi.findByBarcode(orderItemForm.getBarcode());</span>
+<span class="fc" id="L68">        List&lt;OrderItem&gt; listPojo = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        for(OrderItemForm orderItemForm : listForm) {</span>
+<span class="fc" id="L70">            Product product = productApi.findByBarcode(orderItemForm.getBarcode());</span>
 
-<span class="nc" id="L72">            OrderItem orderItem = new OrderItem();</span>
-<span class="nc" id="L73">            orderItem.setQuantity(orderItemForm.getQuantity());</span>
-<span class="nc" id="L74">            orderItem.setProductId(product.getId());</span>
-<span class="nc" id="L75">            orderItem.setSellingPrice(orderItemForm.getSellingPrice());</span>
+<span class="fc" id="L72">            OrderItem orderItem = new OrderItem();</span>
+<span class="fc" id="L73">            orderItem.setQuantity(orderItemForm.getQuantity());</span>
+<span class="fc" id="L74">            orderItem.setProductId(product.getId());</span>
+<span class="fc" id="L75">            orderItem.setSellingPrice(orderItemForm.getSellingPrice());</span>
 
-<span class="nc" id="L77">            listPojo.add(orderItem);</span>
-<span class="nc" id="L78">        }</span>
-<span class="nc" id="L79">        return listPojo;</span>
+<span class="fc" id="L77">            listPojo.add(orderItem);</span>
+<span class="fc" id="L78">        }</span>
+<span class="fc" id="L79">        return listPojo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

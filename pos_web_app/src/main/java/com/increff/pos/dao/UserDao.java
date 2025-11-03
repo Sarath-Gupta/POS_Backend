@@ -21,17 +21,4 @@ public class UserDao extends AbstractDao<User>{
         }
     }
 
-    public User login(String email, String password) {
-        TypedQuery<User> query = getEntityManager()
-                .createQuery(LOGIN, User.class);
-        query.setParameter("email", email);
-        query.setParameter("password", password);
-        try {
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-
-    }
-
 }

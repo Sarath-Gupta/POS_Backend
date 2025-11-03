@@ -6,19 +6,19 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 @Repository
-<span class="nc" id="L9">public class ClientDao extends AbstractDao&lt;Client&gt; {</span>
+<span class="fc" id="L9">public class ClientDao extends AbstractDao&lt;Client&gt; {</span>
 
     public static final String SELECT_BY_NAME = &quot;SELECT c FROM Client c WHERE c.clientName = :name&quot;;
 
     public Client findByName(String name) {
-<span class="nc" id="L14">        TypedQuery&lt;Client&gt; query = getEntityManager()</span>
-<span class="nc" id="L15">                .createQuery(SELECT_BY_NAME, Client.class);</span>
-<span class="nc" id="L16">        query.setParameter(&quot;name&quot;, name);</span>
+<span class="fc" id="L14">        TypedQuery&lt;Client&gt; query = getEntityManager()</span>
+<span class="fc" id="L15">                .createQuery(SELECT_BY_NAME, Client.class);</span>
+<span class="fc" id="L16">        query.setParameter(&quot;name&quot;, name);</span>
 
         try {
-<span class="nc" id="L19">            return query.getSingleResult();</span>
-<span class="nc" id="L20">        } catch (NoResultException e) {</span>
-<span class="nc" id="L21">            return null;</span>
+<span class="fc" id="L19">            return query.getSingleResult();</span>
+<span class="fc" id="L20">        } catch (NoResultException e) {</span>
+<span class="fc" id="L21">            return null;</span>
         }
     }
 

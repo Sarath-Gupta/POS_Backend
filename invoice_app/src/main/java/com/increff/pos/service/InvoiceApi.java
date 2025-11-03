@@ -38,7 +38,7 @@ public class InvoiceApi {
     public InvoiceData generateInvoice(InvoiceRequest invoiceRequest) throws ApiException {
 
         OrderData order = invoiceRequest.getOrderData();
-        List<OrderItem> items = invoiceRequest.getOrderItems();
+        List<OrderItem> items = invoiceRequest.getOrderItemData();
         List<String> productNames = invoiceRequest.getProductNames();
 
 

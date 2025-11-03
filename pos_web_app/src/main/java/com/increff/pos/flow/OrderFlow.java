@@ -64,7 +64,7 @@ public class OrderFlow {
 
         InvoiceRequest requestPayload = new InvoiceRequest();
         requestPayload.setOrderData(orderData);
-        requestPayload.setOrderItems(items);
+        requestPayload.setOrderItemData(items);
         requestPayload.setProductNames(productNames);
 
         String jsonPayload;

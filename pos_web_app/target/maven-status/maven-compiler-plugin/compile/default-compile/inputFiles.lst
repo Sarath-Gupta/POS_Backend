@@ -2,9 +2,9 @@
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/config/DbConfig.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/config/JwtAuthenticationFilter.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/config/SecurityConfig.java
-/Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/config/SecurityWebApplicationInitializer.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/config/SpringConfig.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/config/SwaggerConfig.java
+/Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/config/TestDbConfig.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/config/WebInitializer.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/controller/ClientController.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/main/java/com/increff/pos/controller/ControllerAdvice.java

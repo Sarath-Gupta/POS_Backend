@@ -7,7 +7,7 @@ import javax.persistence.TypedQuery;
 
 
 @Repository
-<span class="nc" id="L10">public class DashboardDao extends AbstractDao&lt;Orders&gt; {</span>
+<span class="fc" id="L10">public class DashboardDao extends AbstractDao&lt;Orders&gt; {</span>
 
     private static final String SELECT_CLIENT_COUNT = &quot;SELECT COUNT(c.id) FROM Client c&quot;;
     private static final String SELECT_PRODUCT_COUNT = &quot;SELECT COUNT(p.id) FROM Product p&quot;;
@@ -15,23 +15,23 @@ import javax.persistence.TypedQuery;
     private static final String SELECT_TOTAL_REVENUE = &quot;SELECT COALESCE(SUM(o.total_amount), 0.0) FROM Orders o WHERE o.status = 'INVOICED'&quot;;
 
     public Long getTotalClients() {
-<span class="nc" id="L18">        TypedQuery&lt;Long&gt; query = getEntityManager().createQuery(SELECT_CLIENT_COUNT, Long.class);</span>
-<span class="nc" id="L19">        return query.getSingleResult();</span>
+<span class="fc" id="L18">        TypedQuery&lt;Long&gt; query = getEntityManager().createQuery(SELECT_CLIENT_COUNT, Long.class);</span>
+<span class="fc" id="L19">        return query.getSingleResult();</span>
     }
 
     public Long getTotalProducts() {
-<span class="nc" id="L23">        TypedQuery&lt;Long&gt; query = getEntityManager().createQuery(SELECT_PRODUCT_COUNT, Long.class);</span>
-<span class="nc" id="L24">        return query.getSingleResult();</span>
+<span class="fc" id="L23">        TypedQuery&lt;Long&gt; query = getEntityManager().createQuery(SELECT_PRODUCT_COUNT, Long.class);</span>
+<span class="fc" id="L24">        return query.getSingleResult();</span>
     }
 
     public Double getTotalRevenue() {
-<span class="nc" id="L28">        TypedQuery&lt;Double&gt; query = getEntityManager().createQuery(SELECT_TOTAL_REVENUE, Double.class);</span>
-<span class="nc" id="L29">        return query.getSingleResult();</span>
+<span class="fc" id="L28">        TypedQuery&lt;Double&gt; query = getEntityManager().createQuery(SELECT_TOTAL_REVENUE, Double.class);</span>
+<span class="fc" id="L29">        return query.getSingleResult();</span>
     }
 
     public Long getTotalOrders() {
-<span class="nc" id="L33">        TypedQuery&lt;Long&gt; query = getEntityManager().createQuery(SELECT_ORDER_COUNT, Long.class);</span>
-<span class="nc" id="L34">        return query.getSingleResult();</span>
+<span class="fc" id="L33">        TypedQuery&lt;Long&gt; query = getEntityManager().createQuery(SELECT_ORDER_COUNT, Long.class);</span>
+<span class="fc" id="L34">        return query.getSingleResult();</span>
     }
 }
 

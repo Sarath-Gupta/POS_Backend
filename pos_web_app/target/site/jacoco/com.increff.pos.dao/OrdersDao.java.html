@@ -7,26 +7,26 @@ import javax.persistence.Query;
 
 
 @Repository
-<span class="nc" id="L10">public class OrdersDao extends AbstractDao&lt;Orders&gt; {</span>
+<span class="fc" id="L10">public class OrdersDao extends AbstractDao&lt;Orders&gt; {</span>
 
     public static final String UPDATE_STATUS_INVOICED = &quot;UPDATE Orders SET status = 'INVOICED' WHERE id = :orderId&quot;;
     public static final String UPDATE_STATUS_CANCELLED = &quot;UPDATE Orders SET status = 'CANCELLED' WHERE id = :orderId&quot;;
 
     @Transactional
     public void updateStatusToInvoiced(Integer orderId) {
-<span class="nc" id="L17">        Query query = getEntityManager()</span>
-<span class="nc" id="L18">                .createQuery(UPDATE_STATUS_INVOICED);</span>
-<span class="nc" id="L19">        query.setParameter(&quot;orderId&quot;, orderId);</span>
-<span class="nc" id="L20">        query.executeUpdate();</span>
-<span class="nc" id="L21">    }</span>
+<span class="fc" id="L17">        Query query = getEntityManager()</span>
+<span class="fc" id="L18">                .createQuery(UPDATE_STATUS_INVOICED);</span>
+<span class="fc" id="L19">        query.setParameter(&quot;orderId&quot;, orderId);</span>
+<span class="fc" id="L20">        query.executeUpdate();</span>
+<span class="fc" id="L21">    }</span>
 
     @Transactional
     public void cancelOrder(Integer orderId) {
-<span class="nc" id="L25">        Query query = getEntityManager()</span>
-<span class="nc" id="L26">                .createQuery(UPDATE_STATUS_CANCELLED);</span>
-<span class="nc" id="L27">        query.setParameter(&quot;orderId&quot;, orderId);</span>
-<span class="nc" id="L28">        query.executeUpdate();</span>
-<span class="nc" id="L29">    }</span>
+<span class="fc" id="L25">        Query query = getEntityManager()</span>
+<span class="fc" id="L26">                .createQuery(UPDATE_STATUS_CANCELLED);</span>
+<span class="fc" id="L27">        query.setParameter(&quot;orderId&quot;, orderId);</span>
+<span class="fc" id="L28">        query.executeUpdate();</span>
+<span class="fc" id="L29">    }</span>
 
 
 

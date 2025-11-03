@@ -6,10 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -19,11 +16,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 @Configuration
 @EnableWebMvc
 
-@ComponentScan(
-        basePackages = "com.increff.pos.controller",
-        useDefaultFilters = false,
-        includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)
-)
+@ComponentScan(basePackages = "com.increff.pos")
 public class SpringConfig implements WebMvcConfigurer {
 
     @Bean
@@ -54,7 +47,6 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // These are for serving Swagger UI
         registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
@@ -63,7 +55,6 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // Redirect helper so Swagger UI loads with the correct docs URL under context path
         registry.addRedirectViewController("/swagger", "/swagger-ui.html?url=/pos/v2/api-docs");
     }
 }

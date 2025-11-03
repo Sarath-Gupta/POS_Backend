@@ -1,6 +1,5 @@
 package com.increff.pos.model.data;
 
-import com.increff.pos.entity.Orders;
 import com.increff.pos.entity.OrderItem;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +10,6 @@ import java.util.List;
 @Setter
 public class InvoiceRequest {
     private OrderData orderData;
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItemData;
     private List<String> productNames;
 }

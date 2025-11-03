@@ -49,8 +49,10 @@ public class ProductApi extends AbstractApi<Product>{
         return oldProduct;
     }
 
-    public Product findByBarcode(String barcode) {
-        return productDao.findByBarcode(barcode);
+    public Product findByBarcode(String barcode) throws ApiException{
+        Product product = productDao.findByBarcode(barcode);
+        ifNotExists(product);
+        return product;
     }
 
 

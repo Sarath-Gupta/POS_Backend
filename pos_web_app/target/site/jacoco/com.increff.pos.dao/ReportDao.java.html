@@ -10,18 +10,18 @@ import java.util.List;
 
 
 @Repository
-<span class="nc" id="L13">public class ReportDao {</span>
+<span class="fc" id="L13">public class ReportDao {</span>
 
     @PersistenceContext
     EntityManager em;
 
     public List&lt;Tuple&gt; getDashboardSummary() {
-<span class="nc" id="L19">        String jpql = &quot;SELECT &quot; +</span>
+<span class="fc" id="L19">        String jpql = &quot;SELECT &quot; +</span>
                 &quot;COALESCE(SUM(oi.quantity * oi.sellingPrice), 0) AS totalRevenue, &quot; +
                 &quot;COUNT(DISTINCT o.id) AS totalOrders, &quot; +
                 &quot;COUNT(DISTINCT p.id) AS totalProducts, &quot; +
                 &quot;COUNT(DISTINCT c.id) AS totalClients, &quot; +
-                &quot;CASE WHEN COUNT(DISTINCT o.id) &gt; 0 THEN SUM(oi.quantity * oi.sellingPrice) / COUNT(DISTINCT o.id) ELSE 0 END AS averageOrderValue, &quot; +
+                &quot;COALESCE(SUM(oi.quantity * oi.sellingPrice) / NULLIF(COUNT(DISTINCT o.id), 0.0), 0.0) AS averageOrderValue, &quot; +
                 &quot;COUNT(CASE WHEN i.quantity &lt; 10 THEN 1 END) AS lowStockItems, &quot; +
                 &quot;COALESCE(SUM(i.quantity * p.mrp), 0) AS inventoryValue &quot; +
                 &quot;FROM Orders o &quot; +
@@ -29,34 +29,34 @@ import java.util.List;
                 &quot;LEFT JOIN Product p ON oi.productId = p.id &quot; +
                 &quot;LEFT JOIN Client c ON p.clientId = c.id &quot; +
                 &quot;LEFT JOIN Inventory i ON p.id = i.productId&quot;;
-<span class="nc" id="L32">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
-<span class="nc" id="L33">        return query.getResultList();</span>
+<span class="fc" id="L32">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
+<span class="fc" id="L33">        return query.getResultList();</span>
     }
 
     public List&lt;Tuple&gt; getSalesMetrics() {
-<span class="nc" id="L37">        String jpql = &quot;SELECT &quot; +</span>
+<span class="fc" id="L37">        String jpql = &quot;SELECT &quot; +</span>
                 &quot;COALESCE(SUM(oi.quantity * oi.sellingPrice), 0) AS totalRevenue, &quot; +
                 &quot;COUNT(DISTINCT o.id) AS totalOrders &quot; +
                 &quot;FROM Orders o, OrderItem oi &quot; +
                 &quot;WHERE o.id = oi.orderId&quot;;
-<span class="nc" id="L42">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
-<span class="nc" id="L43">        return query.getResultList();</span>
+<span class="fc" id="L42">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
+<span class="fc" id="L43">        return query.getResultList();</span>
     }
 
     public List&lt;Tuple&gt; getInventoryMetrics() {
-<span class="nc" id="L47">        String jpql = &quot;SELECT &quot; +</span>
+<span class="fc" id="L47">        String jpql = &quot;SELECT &quot; +</span>
                 &quot;COUNT(DISTINCT p.id) AS totalProducts, &quot; +
                 &quot;COUNT(DISTINCT c.id) AS totalClients, &quot; +
                 &quot;COUNT(CASE WHEN i.quantity &lt; 10 THEN 1 END) AS lowStockItems, &quot; +
                 &quot;COALESCE(SUM(i.quantity * p.mrp), 0) AS inventoryValue &quot; +
                 &quot;FROM Product p, Client c, Inventory i &quot; +
                 &quot;WHERE p.clientId = c.id AND p.id = i.productId&quot;;
-<span class="nc" id="L54">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
-<span class="nc" id="L55">        return query.getResultList();</span>
+<span class="fc" id="L54">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
+<span class="fc" id="L55">        return query.getResultList();</span>
     }
 
     public List&lt;Tuple&gt; getTopSellingProducts(Integer limit) {
-<span class="nc" id="L59">        String jpql = &quot;SELECT &quot; +</span>
+<span class="fc" id="L59">        String jpql = &quot;SELECT &quot; +</span>
                 &quot;p.name AS productName, &quot; +
                 &quot;p.barcode AS barcode, &quot; +
                 &quot;c.clientName AS clientName, &quot; +
@@ -67,26 +67,26 @@ import java.util.List;
                 &quot;WHERE oi.orderId = o.id AND oi.productId = p.id AND p.clientId = c.id AND p.id = i.productId &quot; +
                 &quot;GROUP BY p.id, p.name, p.barcode, c.clientName, i.quantity &quot; +
                 &quot;ORDER BY totalQuantitySold DESC&quot;;
-<span class="nc" id="L70">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
-<span class="nc bnc" id="L71" title="All 4 branches missed.">        if (limit != null &amp;&amp; limit &gt; 0) {</span>
-<span class="nc" id="L72">            query.setMaxResults(limit);</span>
+<span class="fc" id="L70">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
+<span class="pc bpc" id="L71" title="2 of 4 branches missed.">        if (limit != null &amp;&amp; limit &gt; 0) {</span>
+<span class="fc" id="L72">            query.setMaxResults(limit);</span>
         }
-<span class="nc" id="L74">        return query.getResultList();</span>
+<span class="fc" id="L74">        return query.getResultList();</span>
     }
 
     public List&lt;Tuple&gt; getRevenueTrend(String period) {
-        // Simplified query that works with JPQL
-<span class="nc" id="L79">        String jpql = &quot;SELECT &quot; +</span>
-                &quot;date(o.createdAt) AS period, &quot; +
+<span class="nc" id="L78">        String jpql = &quot;SELECT &quot; +</span>
+                &quot;FUNC('DATE', o.createdAt) AS period, &quot; +
                 &quot;SUM(oi.quantity * oi.sellingPrice) AS revenue, &quot; +
                 &quot;COUNT(DISTINCT o.id) AS orderCount, &quot; +
                 &quot;SUM(oi.quantity) AS itemsSold &quot; +
                 &quot;FROM OrderItem oi, Orders o &quot; +
                 &quot;WHERE oi.orderId = o.id &quot; +
-                &quot;GROUP BY DATE(o.createdAt) &quot; +
-                &quot;ORDER BY DATE(o.createdAt) DESC&quot;;
-<span class="nc" id="L88">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
-<span class="nc" id="L89">        return query.getResultList();</span>
+                &quot;GROUP BY FUNC('DATE', o.createdAt) &quot; +
+                &quot;ORDER BY FUNC('DATE', o.createdAt) DESC&quot;;
+<span class="nc" id="L87">        TypedQuery&lt;Tuple&gt; query = em.createQuery(jpql, Tuple.class);</span>
+<span class="nc" id="L88">        return query.getResultList();</span>
     }
 }
+
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

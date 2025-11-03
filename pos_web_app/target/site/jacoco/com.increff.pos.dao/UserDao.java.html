@@ -7,7 +7,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 @Repository
-<span class="nc" id="L10">public class UserDao extends AbstractDao&lt;User&gt;{</span>
+<span class="fc" id="L10">public class UserDao extends AbstractDao&lt;User&gt;{</span>
     private static final String SELECT_BY_EMAIL = &quot;SELECT u FROM User u WHERE u.email = :email&quot;;
     private static final String LOGIN = &quot;SELECT u from User u WHERE u.email = :email AND u.password = :password&quot;;
     public User findByEmail(String email) {
@@ -19,19 +19,6 @@ import javax.persistence.TypedQuery;
 <span class="nc" id="L19">        } catch (NoResultException e) {</span>
 <span class="nc" id="L20">            return null;</span>
         }
-    }
-
-    public User login(String email, String password) {
-<span class="nc" id="L25">        TypedQuery&lt;User&gt; query = getEntityManager()</span>
-<span class="nc" id="L26">                .createQuery(LOGIN, User.class);</span>
-<span class="nc" id="L27">        query.setParameter(&quot;email&quot;, email);</span>
-<span class="nc" id="L28">        query.setParameter(&quot;password&quot;, password);</span>
-        try {
-<span class="nc" id="L30">            return query.getSingleResult();</span>
-<span class="nc" id="L31">        } catch (NoResultException e) {</span>
-<span class="nc" id="L32">            return null;</span>
-        }
-
     }
 
 }

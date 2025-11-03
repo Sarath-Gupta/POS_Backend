@@ -49,8 +49,10 @@ import java.util.Objects;
 <span class="fc" id="L49">        return oldProduct;</span>
     }
 
-    public Product findByBarcode(String barcode) {
-<span class="fc" id="L53">        return productDao.findByBarcode(barcode);</span>
+    public Product findByBarcode(String barcode) throws ApiException{
+<span class="fc" id="L53">        Product product = productDao.findByBarcode(barcode);</span>
+<span class="fc" id="L54">        ifNotExists(product);</span>
+<span class="fc" id="L55">        return product;</span>
     }
 
 

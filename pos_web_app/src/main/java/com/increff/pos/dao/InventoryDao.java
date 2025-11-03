@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -15,7 +15,7 @@ public class InventoryDao extends AbstractDao<Inventory> {
 
     public static final String SELECT_BY_PRODUCT_ID = "SELECT i FROM Inventory i WHERE i.productId = :productId";
     public static final String SELECT_BETWEEN_QUANTITY = "SELECT i FROM Inventory i WHERE i.quantity BETWEEN :min AND :max";
-    public static final String SELECT_BETWEEN_DATE = "SELECT i FROM Inventory i WHERE i.dateTime BETWEEN :startDate AND :endDate";
+    public static final String SELECT_BETWEEN_DATE = "SELECT i FROM Inventory i WHERE i.createdAt BETWEEN :startDate AND :endDate";
 
     @Transactional
     public Inventory findByProductId(Integer productId) {
@@ -37,7 +37,7 @@ public class InventoryDao extends AbstractDao<Inventory> {
         return query.getResultList();
     }
 
-    public List<Inventory> findByDateBetween(LocalDate startDate, LocalDate endDate) {
+    public List<Inventory> findByDateBetween(ZonedDateTime startDate, ZonedDateTime endDate) {
         TypedQuery<Inventory> query = getEntityManager()
                 .createQuery(SELECT_BETWEEN_DATE, Inventory.class);
         query.setParameter("startDate", startDate);

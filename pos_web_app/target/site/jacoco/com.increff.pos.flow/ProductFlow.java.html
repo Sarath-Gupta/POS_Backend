@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 @Component
-<span class="nc" id="L16">public class ProductFlow {</span>
+<span class="fc" id="L16">public class ProductFlow {</span>
 
     @Autowired
     ClientApi clientApi;
@@ -25,16 +25,16 @@ import java.util.Objects;
     InventoryApi inventoryApi;
 
     public void add(Product product) throws ApiException {
-<span class="nc" id="L28">        Client clientPojo = clientApi.getById(product.getClientId());</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        if(Objects.isNull(clientPojo)) {</span>
-<span class="nc" id="L30">            throw new ApiException(&quot;Client doesn't exist&quot;);</span>
+<span class="fc" id="L28">        Client clientPojo = clientApi.getById(product.getClientId());</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if(Objects.isNull(clientPojo)) {</span>
+<span class="fc" id="L30">            throw new ApiException(&quot;Client doesn't exist&quot;);</span>
         }
-<span class="nc" id="L32">        productApi.add(product);</span>
+<span class="fc" id="L32">        productApi.add(product);</span>
 
-<span class="nc" id="L34">        Inventory inventory = new Inventory();</span>
-<span class="nc" id="L35">        inventory.setProductId(product.getId());</span>
-<span class="nc" id="L36">        inventory.setQuantity(0);</span>
-<span class="nc" id="L37">        inventoryApi.add(inventory);</span>
-<span class="nc" id="L38">    }</span>
+<span class="fc" id="L34">        Inventory inventory = new Inventory();</span>
+<span class="fc" id="L35">        inventory.setProductId(product.getId());</span>
+<span class="fc" id="L36">        inventory.setQuantity(0);</span>
+<span class="fc" id="L37">        inventoryApi.add(inventory);</span>
+<span class="fc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

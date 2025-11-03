@@ -21,7 +21,7 @@ public class ReportDao {
                 "COUNT(DISTINCT o.id) AS totalOrders, " +
                 "COUNT(DISTINCT p.id) AS totalProducts, " +
                 "COUNT(DISTINCT c.id) AS totalClients, " +
-                "CASE WHEN COUNT(DISTINCT o.id) > 0 THEN SUM(oi.quantity * oi.sellingPrice) / COUNT(DISTINCT o.id) ELSE 0 END AS averageOrderValue, " +
+                "COALESCE(SUM(oi.quantity * oi.sellingPrice) / NULLIF(COUNT(DISTINCT o.id), 0.0), 0.0) AS averageOrderValue, " +
                 "COUNT(CASE WHEN i.quantity < 10 THEN 1 END) AS lowStockItems, " +
                 "COALESCE(SUM(i.quantity * p.mrp), 0) AS inventoryValue " +
                 "FROM Orders o " +
@@ -75,17 +75,17 @@ public class ReportDao {
     }
 
     public List<Tuple> getRevenueTrend(String period) {
-        // Simplified query that works with JPQL
         String jpql = "SELECT " +
-                "date(o.createdAt) AS period, " +
+                "FUNC('DATE', o.createdAt) AS period, " +
                 "SUM(oi.quantity * oi.sellingPrice) AS revenue, " +
                 "COUNT(DISTINCT o.id) AS orderCount, " +
                 "SUM(oi.quantity) AS itemsSold " +
                 "FROM OrderItem oi, Orders o " +
                 "WHERE oi.orderId = o.id " +
-                "GROUP BY DATE(o.createdAt) " +
-                "ORDER BY DATE(o.createdAt) DESC";
+                "GROUP BY FUNC('DATE', o.createdAt) " +
+                "ORDER BY FUNC('DATE', o.createdAt) DESC";
         TypedQuery<Tuple> query = em.createQuery(jpql, Tuple.class);
         return query.getResultList();
     }
 }
+
