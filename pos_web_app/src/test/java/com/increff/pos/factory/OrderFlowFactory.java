@@ -1,48 +1,56 @@
 package com.increff.pos.factory;
 
+import com.increff.pos.commons.OrderStatus;
+import com.increff.pos.entity.Inventory;
+import com.increff.pos.entity.OrderItem;
+import com.increff.pos.entity.Orders;
+import com.increff.pos.entity.Product;
 import com.increff.pos.model.data.InvoiceData;
-import com.increff.pos.model.data.InvoiceRequest;
 import com.increff.pos.model.data.OrderData;
-import org.instancio.Instancio;
-import org.instancio.Model;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 
-import static org.instancio.Select.field;
+public class OrderFlowFactory {
 
-public final class OrderFlowFactory {
-
-    private OrderFlowFactory() {
-    }
-
-    private static final Model<OrderData> NEW_ORDER_DATA_MODEL = Instancio.of(OrderData.class)
-            .set(field(OrderData::getId), null)
-            .set(field(OrderData::getCreatedAt), ZonedDateTime.now())
-            .toModel();
-
-
-    private static final Model<OrderData> PERSISTED_ORDER_DATA_MODEL = Instancio.of(OrderData.class)
-            .generate(field(OrderData::getId), gen -> gen.ints().min(1))
-            .set(field(OrderData::getCreatedAt), ZonedDateTime.now())
-            .toModel();
-
-    public static OrderData mockPersistedOrderData() {
-        return Instancio.of(PERSISTED_ORDER_DATA_MODEL).create();
+    public static Orders mockOrder(Integer id, OrderStatus status) {
+        Orders order = new Orders();
+        order.setId(id);
+        order.setStatus(status);
+        return order;
     }
 
     public static OrderData mockPersistedOrderData(Integer id) {
-        return Instancio.of(PERSISTED_ORDER_DATA_MODEL)
-                .set(field(OrderData::getId), id)
-                .create();
+        OrderData orderData = new OrderData();
+        orderData.setId(id);
+        orderData.setCreatedAt(ZonedDateTime.now());
+        return orderData;
     }
 
-    public static InvoiceRequest mockEmptyInvoiceRequest() {
-        return Instancio.of(InvoiceRequest.class)
-                .set(field(InvoiceRequest::getOrderItemData), new ArrayList<>())
-                .set(field(InvoiceRequest::getProductNames), new ArrayList<>())
-                .create();
+    public static OrderItem mockOrderItem(Integer id, Integer orderId, Integer productId, int quantity, double sellingPrice) {
+        OrderItem item = new OrderItem();
+        item.setId(id);
+        item.setOrderId(orderId);
+        item.setProductId(productId);
+        item.setQuantity(quantity);
+        item.setSellingPrice(sellingPrice);
+        return item;
     }
 
+    public static Product mockProduct(Integer id, String name) {
+        Product p = new Product();
+        p.setId(id);
+        p.setName(name);
+        p.setBarcode("barcode-" + id);
+        p.setMrp(100.0);
+        return p;
+    }
+
+    public static Inventory mockInventory(Integer id, Integer productId, int quantity) {
+        Inventory inv = new Inventory();
+        inv.setId(id);
+        inv.setProductId(productId);
+        inv.setQuantity(quantity);
+        return inv;
+    }
 
     public static InvoiceData mockInvoiceData(Integer orderId, String base64Pdf) {
         InvoiceData invoiceData = new InvoiceData();

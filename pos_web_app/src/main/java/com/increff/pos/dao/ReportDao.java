@@ -1,5 +1,6 @@
 package com.increff.pos.dao;
 
+import com.increff.pos.entity.Orders;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,10 +11,7 @@ import java.util.List;
 
 
 @Repository
-public class ReportDao {
-
-    @PersistenceContext
-    EntityManager em;
+public class ReportDao extends AbstractDao<Orders>{
 
     public List<Tuple> getDashboardSummary() {
         String jpql = "SELECT " +
@@ -29,7 +27,7 @@ public class ReportDao {
                 "LEFT JOIN Product p ON oi.productId = p.id " +
                 "LEFT JOIN Client c ON p.clientId = c.id " +
                 "LEFT JOIN Inventory i ON p.id = i.productId";
-        TypedQuery<Tuple> query = em.createQuery(jpql, Tuple.class);
+        TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);
         return query.getResultList();
     }
 
@@ -39,7 +37,7 @@ public class ReportDao {
                 "COUNT(DISTINCT o.id) AS totalOrders " +
                 "FROM Orders o, OrderItem oi " +
                 "WHERE o.id = oi.orderId";
-        TypedQuery<Tuple> query = em.createQuery(jpql, Tuple.class);
+        TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);
         return query.getResultList();
     }
 
@@ -51,7 +49,7 @@ public class ReportDao {
                 "COALESCE(SUM(i.quantity * p.mrp), 0) AS inventoryValue " +
                 "FROM Product p, Client c, Inventory i " +
                 "WHERE p.clientId = c.id AND p.id = i.productId";
-        TypedQuery<Tuple> query = em.createQuery(jpql, Tuple.class);
+        TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);
         return query.getResultList();
     }
 
@@ -67,7 +65,7 @@ public class ReportDao {
                 "WHERE oi.orderId = o.id AND oi.productId = p.id AND p.clientId = c.id AND p.id = i.productId " +
                 "GROUP BY p.id, p.name, p.barcode, c.clientName, i.quantity " +
                 "ORDER BY totalQuantitySold DESC";
-        TypedQuery<Tuple> query = em.createQuery(jpql, Tuple.class);
+        TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);
         if (limit != null && limit > 0) {
             query.setMaxResults(limit);
         }
@@ -76,15 +74,15 @@ public class ReportDao {
 
     public List<Tuple> getRevenueTrend(String period) {
         String jpql = "SELECT " +
-                "FUNC('DATE', o.createdAt) AS period, " +
+                "CAST(o.createdAt AS date) AS period, " +
                 "SUM(oi.quantity * oi.sellingPrice) AS revenue, " +
                 "COUNT(DISTINCT o.id) AS orderCount, " +
                 "SUM(oi.quantity) AS itemsSold " +
                 "FROM OrderItem oi, Orders o " +
                 "WHERE oi.orderId = o.id " +
-                "GROUP BY FUNC('DATE', o.createdAt) " +
-                "ORDER BY FUNC('DATE', o.createdAt) DESC";
-        TypedQuery<Tuple> query = em.createQuery(jpql, Tuple.class);
+                "GROUP BY CAST(o.createdAt AS date) " +
+                "ORDER BY CAST(o.createdAt AS date) DESC";
+        TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);
         return query.getResultList();
     }
 }

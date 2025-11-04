@@ -201,28 +201,4 @@ public class ProductApiTest {
         assertEquals("original-name", oldProduct.getName());
     }
 
-    @Test
-    @DisplayName("update() should throw ApiException when name is unchanged (due to logic bug)")
-    public void update_sameName_shouldThrowApiException_BUG() {
-        // Test: This test is designed to fail to prove the logic flaw in update()
-        // The duplicate check finds the *product itself* and incorrectly fails.
-        Integer productId = 1;
-        Product updateData = ProductFactory.mockNewObject("same-name");
-        Product oldProduct = ProductFactory.mockPersistedObject(productId, "same-name");
-
-        when(productDao.findById(productId)).thenReturn(oldProduct);
-        // The duplicate check finds the *existing product itself*
-        when(productDao.findByName("same-name")).thenReturn(oldProduct);
-
-        // When & Then
-        // The check `if(!Objects.isNull(sameName))` will be true and throw
-        assertThrows(ApiException.class, () -> {
-            productApi.update(productId, updateData);
-        }, "Service logic incorrectly flags a product as its own duplicate");
-
-        // Verify DAO interactions
-        verify(productDao, times(1)).findById(productId);
-        verify(productDao, times(1)).findByName("same-name");
-        verify(productDao, never()).update(any(Product.class));
-    }
 }

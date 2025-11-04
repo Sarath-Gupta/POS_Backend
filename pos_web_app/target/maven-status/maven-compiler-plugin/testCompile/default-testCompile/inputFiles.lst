@@ -15,6 +15,9 @@
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/integration/dao/ProductDaoIntegrationTest.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/integration/dao/ReportDaoIntegrationTest.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/integration/dto/ClientDtoIntegrationTest.java
+/Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/integration/dto/InventoryDtoIntegrationTest.java
+/Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/integration/dto/OrderItemDtoIntegrationTest.java
+/Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/integration/dto/OrdersDtoIntegrationTest.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/unit/flow/OrderFlowTest.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/unit/flow/OrderItemFlowTest.java
 /Users/sarathgupta/Projects/POS_Project/backend/pos_web_app/src/test/java/com/increff/pos/unit/flow/ProductFlowTest.java

@@ -16,7 +16,7 @@ public class InventoryApi extends AbstractApi<Inventory> {
 
     @Transactional
     public void add(Inventory inventory) throws ApiException {
-        Inventory existing = inventoryDao.findByProductId(inventory.getProductId());
+        Inventory existing = inventoryDao.findById(inventory.getProductId());
         ifExists(existing);
         inventoryDao.add(inventory);
     }
@@ -39,9 +39,9 @@ public class InventoryApi extends AbstractApi<Inventory> {
 
     @Transactional
     public Inventory update(Integer id, Inventory updatedInventory) throws ApiException {
-        Inventory existing = inventoryDao.findById(id);
+        Inventory existing = inventoryDao.findByProductId(id);
         ifNotExists(existing);
-        existing.setQuantity(updatedInventory.getQuantity());
+        existing.setQuantity(existing.getQuantity() + updatedInventory.getQuantity());
         return existing;
     }
 

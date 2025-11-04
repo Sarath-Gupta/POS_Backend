@@ -7,10 +7,13 @@ import com.increff.pos.commons.ApiException;
 import com.increff.pos.model.data.OrderData;
 import com.increff.pos.entity.Orders;
 import com.increff.pos.util.AbstractMapper;
+import com.increff.pos.util.NormalizeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.time.ZonedDateTime;
 
 @Component
 public class OrdersDto {
@@ -42,6 +45,14 @@ public class OrdersDto {
     public void cancelOrder(Integer orderId) throws ApiException {
         orderApi.getById(orderId);
         orderFlow.cancelOrder(orderId);
+    }
+
+    public Page<OrderData> getFilteredOrders(Pageable pageable, Integer orderId, String status, String startDate, String endDate) {
+        NormalizeUtil.normalize(status);
+        ZonedDateTime startDateNormalized = NormalizeUtil.normalizeDate(startDate);
+        ZonedDateTime endDateNormalized = NormalizeUtil.normalizeDate(endDate);
+        Page<Orders> ordersPage = orderApi.getFilteredAll(pageable, orderId, status, startDateNormalized, endDateNormalized);
+        return ordersPage.map(orders -> mapper.convert(orders, OrderData.class));
     }
 
 }

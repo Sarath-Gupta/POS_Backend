@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
+import java.util.List;
+
 @Service
 public class OrderApi extends AbstractApi<Orders>{
 
@@ -22,6 +25,10 @@ public class OrderApi extends AbstractApi<Orders>{
 
     public Page<Orders> getAll(Pageable pageable) {
         return ordersDao.findAll(pageable);
+    }
+
+    public List<Orders> findAll() {
+        return ordersDao.getAll();
     }
 
     public Orders getById(Integer id) throws ApiException {
@@ -40,6 +47,10 @@ public class OrderApi extends AbstractApi<Orders>{
 
     public void update(Orders order) {
         ordersDao.update(order);
+    }
+
+    public Page<Orders> getFilteredAll(Pageable pageable, Integer orderId, String status, ZonedDateTime startDate, ZonedDateTime endDate) {
+        return ordersDao.getFilteredAll(pageable, orderId, status, startDate, endDate);
     }
 
 }

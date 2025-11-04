@@ -26,6 +26,19 @@ public class OrderController {
         return ordersDto.getAll(pageable);
     }
 
+    @RequestMapping(value = "/filtered", method = RequestMethod.GET)
+    public Page<OrderData> getOrdersFiltered(
+            @RequestParam(required = false) Integer orderId,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ordersDto.getFilteredOrders(pageable, orderId, status, startDate, endDate);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public OrderData getById(@PathVariable("id") Integer id) throws ApiException {
         return ordersDto.getById(id);
@@ -40,5 +53,8 @@ public class OrderController {
     public void cancelOrder(@PathVariable Integer orderId) throws ApiException {
         ordersDto.cancelOrder(orderId);
     }
+
+
+
 
 }

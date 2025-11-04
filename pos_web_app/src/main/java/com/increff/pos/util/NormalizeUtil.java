@@ -3,6 +3,9 @@ package com.increff.pos.util;
 import com.increff.pos.model.form.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -31,6 +34,20 @@ public class NormalizeUtil {
         for(OrderItemForm orderItemForm : orderItemList) {
             orderItemForm.setBarcode(orderItemForm.getBarcode().trim().toLowerCase());
         }
+    }
+
+    public static void normalize(String status) {
+        if(status != null) {
+            status.trim().toLowerCase();
+        }
+    }
+
+    public static ZonedDateTime normalizeDate(String date) {
+        if(date != null) {
+            LocalDate localDate = LocalDate.parse(date);
+            return localDate.atStartOfDay(ZoneId.systemDefault());
+        }
+        return null;
     }
 
 }

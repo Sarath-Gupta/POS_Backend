@@ -2,6 +2,7 @@ package com.increff.pos.flow;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.increff.pos.commons.ApiException;
+import com.increff.pos.commons.OrderStatus;
 import com.increff.pos.entity.Inventory;
 import com.increff.pos.entity.OrderItem;
 import com.increff.pos.entity.Orders;
@@ -53,6 +54,9 @@ public class OrderFlow {
 
     public InvoiceData finalizeOrder(Integer orderId) throws ApiException {
         Orders order = orderApi.getById(orderId);
+        if(order.getStatus() == OrderStatus.CANCELLED) {
+            throw new ApiException("Cancelled orders cannot be invoiced");
+        }
         OrderData orderData = mapper.convert(order, OrderData.class);
         List<OrderItem> items = orderItemApi.getAllByOrderId(orderId);
 
@@ -101,6 +105,10 @@ public class OrderFlow {
     }
 
     public void cancelOrder(Integer orderId) throws ApiException{
+        Orders order = orderApi.getById(orderId);
+        if(order.getStatus() == OrderStatus.INVOICED) {
+            throw new ApiException("Invoiced orders cannot be cancelled");
+        }
         List<OrderItem> listItems = orderItemApi.getAllByOrderId(orderId);
         for(OrderItem orderItem : listItems) {
             Integer quantity = orderItem.getQuantity();

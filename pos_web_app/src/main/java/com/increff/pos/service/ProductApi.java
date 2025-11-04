@@ -39,7 +39,7 @@ public class ProductApi extends AbstractApi<Product>{
         Product oldProduct = productDao.findById(id);
         ifNotExists(oldProduct);
         Product sameName = productDao.findByName(product.getName());
-        if(!Objects.isNull(sameName)) {
+        if(!Objects.isNull(sameName) && !oldProduct.getName().equals(product.getName())) {
             throw new ApiException("Product with same name already exists");
         }
         oldProduct.setName(product.getName());
