@@ -40,6 +40,20 @@ public class ProductController {
         return tsvContent;
     }
 
+    @RequestMapping(value = "/filtered", method = RequestMethod.GET)
+    public Page<ProductData> getProductFiltered(
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) String barcode,
+            @RequestParam(required = false) Integer clientId,
+            @RequestParam(required = false) Double minMRP,
+            @RequestParam(required = false) Double maxMRP,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productDto.getFilteredAll(pageable, productName, barcode, clientId, minMRP, maxMRP);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ProductData getById(@PathVariable(value = "id") Integer id) throws ApiException {
         return productDto.findById(id);
@@ -58,4 +72,5 @@ public class ProductController {
     public ProductData update(@PathVariable(value = "id") Integer id, @RequestBody ProductUpdateForm productForm) throws ApiException {
         return productDto.update(id, productForm);
     }
+
 }

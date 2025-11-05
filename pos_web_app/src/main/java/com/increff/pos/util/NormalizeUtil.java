@@ -1,7 +1,6 @@
 package com.increff.pos.util;
 
 import com.increff.pos.model.form.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -22,6 +21,7 @@ public class NormalizeUtil {
     }
 
     public static void normalize(ProductUpdateForm productForm) {
+        productForm.setName(productForm.getName().trim().toLowerCase());
         productForm.setImgUrl(productForm.getImgUrl().trim().toLowerCase());
     }
 

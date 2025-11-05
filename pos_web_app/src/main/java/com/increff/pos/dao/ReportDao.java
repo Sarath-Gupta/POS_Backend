@@ -26,7 +26,8 @@ public class ReportDao extends AbstractDao<Orders>{
                 "LEFT JOIN OrderItem oi ON o.id = oi.orderId " +
                 "LEFT JOIN Product p ON oi.productId = p.id " +
                 "LEFT JOIN Client c ON p.clientId = c.id " +
-                "LEFT JOIN Inventory i ON p.id = i.productId";
+                "LEFT JOIN Inventory i ON p.id = i.productId" +
+                "WHERE o.status = 'INVOICED'";
         TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);
         return query.getResultList();
     }
@@ -36,7 +37,7 @@ public class ReportDao extends AbstractDao<Orders>{
                 "COALESCE(SUM(oi.quantity * oi.sellingPrice), 0) AS totalRevenue, " +
                 "COUNT(DISTINCT o.id) AS totalOrders " +
                 "FROM Orders o, OrderItem oi " +
-                "WHERE o.id = oi.orderId";
+                "WHERE o.id = oi.orderId AND o.status = 'INVOICED' ";
         TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);
         return query.getResultList();
     }
@@ -62,7 +63,7 @@ public class ReportDao extends AbstractDao<Orders>{
                 "SUM(oi.quantity * oi.sellingPrice) AS totalRevenue, " +
                 "i.quantity AS currentStock " +
                 "FROM OrderItem oi, Orders o, Product p, Client c, Inventory i " +
-                "WHERE oi.orderId = o.id AND oi.productId = p.id AND p.clientId = c.id AND p.id = i.productId " +
+                "WHERE oi.orderId = o.id AND oi.productId = p.id AND p.clientId = c.id AND p.id = i.productId AND o.status = 'INVOICED'" +
                 "GROUP BY p.id, p.name, p.barcode, c.clientName, i.quantity " +
                 "ORDER BY totalQuantitySold DESC";
         TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);
@@ -79,7 +80,7 @@ public class ReportDao extends AbstractDao<Orders>{
                 "COUNT(DISTINCT o.id) AS orderCount, " +
                 "SUM(oi.quantity) AS itemsSold " +
                 "FROM OrderItem oi, Orders o " +
-                "WHERE oi.orderId = o.id " +
+                "WHERE oi.orderId = o.id AND o.status = 'INVOICED' " +
                 "GROUP BY CAST(o.createdAt AS date) " +
                 "ORDER BY CAST(o.createdAt AS date) DESC";
         TypedQuery<Tuple> query = getEntityManager().createQuery(jpql, Tuple.class);

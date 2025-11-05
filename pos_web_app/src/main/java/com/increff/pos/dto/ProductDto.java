@@ -110,4 +110,11 @@ public class ProductDto {
         Product updatedPojo = productApi.update(id,pojo);
         return mapper.convert(updatedPojo, ProductData.class);
     }
+
+    public Page<ProductData> getFilteredAll(Pageable pageable, String productName, String barcode, Integer clientId, Double minMRP, Double maxMRP) {
+        NormalizeUtil.normalize(productName);
+        NormalizeUtil.normalize(barcode);
+        Page<Product> productsPage = productApi.getFilteredAll(pageable, productName, barcode, clientId, minMRP, maxMRP);
+        return productsPage.map(product -> mapper.convert(product, ProductData.class));
+    }
 }

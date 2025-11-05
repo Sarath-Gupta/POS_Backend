@@ -1,5 +1,7 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.entity.Product;
+import com.increff.pos.model.data.ProductData;
 import com.increff.pos.model.form.TsvRowResultClient;
 import com.increff.pos.service.ClientApi;
 import com.increff.pos.commons.ApiException;
@@ -106,5 +108,11 @@ public class ClientDto {
         Client clientPojo = mapper.convert(clientForm, Client.class);
         Client updatedPojo = clientApi.update(id, clientPojo);
         return mapper.convert(updatedPojo, ClientData.class);
+    }
+
+    public Page<ClientData> getFilteredAll(Pageable pageable, String name) {
+        NormalizeUtil.normalize(name);
+        Page<Client> productsPage = clientApi.getFilteredAll(pageable, name);
+        return productsPage.map(client -> mapper.convert(client, ClientData.class));
     }
 }

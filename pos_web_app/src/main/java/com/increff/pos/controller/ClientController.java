@@ -2,6 +2,7 @@ package com.increff.pos.controller;
 
 import com.increff.pos.dto.ClientDto;
 import com.increff.pos.commons.ApiException;
+import com.increff.pos.entity.Client;
 import com.increff.pos.model.form.ClientForm;
 import com.increff.pos.model.data.ClientData;
 import io.swagger.annotations.ApiImplicitParam;
@@ -33,6 +34,16 @@ public class ClientController {
     public String addBulkProducts(@RequestParam("file") MultipartFile file) throws ApiException {
         String tsvContent = clientDto.processTsvWithRemarks(file);
         return tsvContent;
+    }
+
+    @RequestMapping(value = "/filtered", method = RequestMethod.GET)
+    public Page<ClientData> getFilteredClients(
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clientDto.getFilteredAll(pageable, name);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

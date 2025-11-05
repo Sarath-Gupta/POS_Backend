@@ -52,5 +52,9 @@ public class ClientApi extends AbstractApi<Client>{
         return oldClient;
     }
 
+    public Page<Client> getFilteredAll(Pageable page, String name) {
+        return clientDao.getFilteredAll(page, name);
+    }
+
 
 }

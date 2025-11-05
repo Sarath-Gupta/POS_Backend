@@ -40,6 +40,7 @@ public class ProductApi extends AbstractApi<Product>{
         ifNotExists(oldProduct);
         Product sameName = productDao.findByName(product.getName());
         if(!Objects.isNull(sameName) && !oldProduct.getName().equals(product.getName())) {
+            System.out.println(oldProduct.getName() + " " + product.getName());
             throw new ApiException("Product with same name already exists");
         }
         oldProduct.setName(product.getName());
@@ -53,6 +54,10 @@ public class ProductApi extends AbstractApi<Product>{
         Product product = productDao.findByBarcode(barcode);
         ifNotExists(product);
         return product;
+    }
+
+    public Page<Product> getFilteredAll(Pageable pageable, String productName, String barcode, Integer clientId, Double minMRP, Double maxMRP) {
+        return productDao.getFilteredAll(pageable, productName, barcode, clientId, minMRP, maxMRP);
     }
 
 

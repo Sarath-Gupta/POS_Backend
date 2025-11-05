@@ -1,4 +1,5 @@
 com/increff/pos/config/ApplicationProperties.class
+com/increff/pos/config/SpringSecurityInitializer.class
 com/increff/pos/service/JwtService.class
 com/increff/pos/config/SecurityConfig.class
 com/increff/pos/service/OrderItemApi.class
